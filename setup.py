@@ -8,13 +8,13 @@ if __name__ == '__main__':
   name = 'lplot'
   setup(name=name,
     version=versioneer.get_version(),
-    cmdclass=versioneer.get_cmdclass()
+    cmdclass=versioneer.get_cmdclass(),
     description='This is the {} module.'.format(name),
     author='Lyuwen Fu',
-    packages=packages,
+    #  packages=packages,
     requires=['numpy', 'PyYAML', 'matplotlib'],
     provides=['lplot'],
-    scripts=scripts,
+    #  scripts=scripts,
     include_package_data=True,
     #  test_suite='nose.collector',
     #  tests_require=['nose']
