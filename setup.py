@@ -15,7 +15,5 @@ if __name__ == '__main__':
     requires=['numpy', 'PyYAML', 'matplotlib'],
     provides=['lplot'],
     #  scripts=scripts,
-    include_package_data=True,
-    #  test_suite='nose.collector',
-    #  tests_require=['nose']
+    #  include_package_data=True,
     )
