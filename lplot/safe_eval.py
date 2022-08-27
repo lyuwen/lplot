@@ -8,11 +8,37 @@ import lplot.unit_conversion as unit_conversion
 import lplot.physical_constant as constant
 
 
+def _safety_check(locals: dict):
+  """
+  Safty check for input local variables.
+
+  The implementation of ``safe_eval`` was potentially dangerous where the variable
+  passed in is derived from the above types but with the operators overridded
+  with malicious code. This ``_safety_check`` function negate the danger by explicitly
+  check the types of each variable against the built-in number types and numpy number
+  tyoes..
+  """
+  allowed_data_type = [int, float, complex, #np.int, np.float, np.complex, # These are deprecated
+      np.int8, np.int16, np.int32, np.int64,
+      np.float16, np.float32, np.float64, np.float128,
+      np.complex64, np.complex128, np.complex256,
+      ]
+  if type(locals) != dict:
+    raise TypeError("Input variables 'locals' is not a dict type.")
+  for key, value in locals.items():
+    if not ((type(value) in allowed_data_type) \
+        or \
+        ((type(value) == np.ndarray) and value.dtype.type in allowed_data_type)):
+      raise TypeError("Type of input local variables '{name}' is not supported".format(name=key))
+
+
+
 def safe_eval(node_or_string: Union[str, ast.AST], locals: dict={}):
-  """ Safely evaluate expression with some supported functions and local variables.
+  """
+  Safely evaluate expression with some supported functions and local variables.
 
   Adapted from Python's built in ast.literal_eval function, this function provides more
-  numerical flexibility with safety remaining the highest priority.
+  numerical flexibility while trying to be as safe as possible.
 
   Parameters
   ----------
@@ -21,9 +47,7 @@ def safe_eval(node_or_string: Union[str, ast.AST], locals: dict={}):
   locals : dict
       Only generic number types, numpy number types, and numpy.ndarray are supported as local variables.
   """
-  if type(locals) != dict:
-    raise TypeError("Input variables 'locals' is not a dict type.")
-  locals = dict(locals)
+  _safety_check(locals)
   valid_numpy_functions = [
       "sum", "sin", "cos", "tan", "arcsin", "arccos", "arctan",
       "log", "exp", "abs", "max", "min", "argmin", "argmax",
@@ -79,6 +103,8 @@ def safe_eval(node_or_string: Union[str, ast.AST], locals: dict={}):
     if isinstance(node, ast.Name):
       if node.id in locals:
         if isinstance(locals[node.id], (Number, np.number, np.ndarray)):
+          # WARNING: There is a danger where the variable passed in is derived from the above types
+          # but with the operators overridded with malicious code.
           return locals[node.id]
       else:
         raise NameError("name \'{name}\' is not defined.".format(name=node.id))
@@ -99,14 +125,13 @@ def safe_eval(node_or_string: Union[str, ast.AST], locals: dict={}):
         return dict(zip(map(_convert, node.keys),
           map(_convert, node.values)))
       elif isinstance(node, ast.BinOp):
-        left = _convert_signed_num(node.left)
-        right = _convert_signed_num(node.right)
+        left = _convert(node.left)
+        right = _convert(node.right)
         if isinstance(node.op, (ast.Add, ast.Sub)):
-          if isinstance(left, (int, float)) and isinstance(right, complex):
-              if isinstance(node.op, ast.Add):
-                return left + right
-              else:
-                return left - right
+          if isinstance(node.op, ast.Add):
+            return left + right
+          else:
+            return left - right
         elif isinstance(node.op, (ast.Mult)):
           return left * right
         elif isinstance(node.op, (ast.Div)):
@@ -121,8 +146,9 @@ def safe_eval(node_or_string: Union[str, ast.AST], locals: dict={}):
 
 def main():
   print("test")
-  exp = "length('inch', 'cm')"
-  print(safe_eval(exp))
+  exp = "x + 3"
+  array = np.zeros((6, ), dtype=int)
+  print(safe_eval(exp, locals={"x": array}))
 
 
 if __name__ == '__main__':
