@@ -68,9 +68,13 @@ class Plot:
 
   def __init__(
       self,
+      title=None,
       backend="matplotlib",
       display=True,
       ):
+    self._title = title
+    self._X = []
+    self._Y = []
     self._set_backend(backend=backend, display=display)
 
   def _set_backend(
@@ -84,11 +88,22 @@ class Plot:
       self._backend = backend(display=display)
 
 
-  def set_data(
+  def add_data(
       self,
       data,
       transform=None,
+      file_mode=False,
       ):
+    if isinstance(data, str):
+      data = np.loadtxt(data)
+    if not isinstance(data, np.ndarray):
+      raise TypeError("Input data is expected to be a str to a datafile or a numpy array.")
+    if len(data.shape) == 1:
+      data = np.array([np.arange(len(data)), data]).T
+    if len(data.shape) != 2:
+      raise ValueError("Input data is expected to be either 1 or 2 dimentional.")
+    x = data[:, 0]
+    y = data[:, 1:]
     pass
 
 
@@ -143,11 +158,13 @@ def main():
 
   args = parser.parse_args()
 
-  for file in args.data:
-    data = np.loadtxt(file)
-    plt.plot(data[:, 0], data[:, 1:])
+  print(args)
 
-  plt.show()
+  #  for file in args.data:
+  #    data = np.loadtxt(file)
+  #    plt.plot(data[:, 0], data[:, 1:])
+  #
+  #  plt.show()
 
 
 if __name__ == '__main__':
