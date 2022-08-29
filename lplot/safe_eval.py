@@ -24,7 +24,10 @@ def _safety_check(locals: dict):
     if not _safety_check_value(value):
       raise TypeError("Type of input local variables '{name}' is not supported".format(name=key))
 
-def _safety_check_value(value: any):
+
+def _safety_check_value(value: any) -> bool:
+  """ Worker function for ``_safety_check`` method.
+  """
   allowed_data_type = [int, float, complex, #np.int, np.float, np.complex, # These are deprecated
       np.int8, np.int16, np.int32, np.int64,
       np.float16, np.float32, np.float64, np.float128,
@@ -40,7 +43,7 @@ def _safety_check_value(value: any):
 
 
 
-def safe_eval(node_or_string: Union[str, ast.AST], locals: dict={}):
+def safe_eval(node_or_string: Union[str, ast.AST], locals: dict={}) -> Union[Number, str, np.ndarray]:
   """
   Safely evaluate expression with some supported functions and local variables.
 
@@ -154,7 +157,9 @@ def safe_eval(node_or_string: Union[str, ast.AST], locals: dict={}):
   return _convert(node_or_string)
 
 
-def eval_slice(slice, locals: dict={}):
+def eval_slice(slice, locals: dict={}) -> slice:
+  """ Evaluate the Slice AST object and reconstruct the slice object.
+  """
   if isinstance(slice, ast.Constant):
     return safe_eval(slice, locals=locals)
   elif isinstance(slice, ast.Slice):
@@ -172,6 +177,8 @@ def eval_slice(slice, locals: dict={}):
 
 
 def safe_assign(target: Union[str, ast.AST], value: any, locals: dict={}):
+  """ Safely assign value to a local variable in locals dict.
+  """
   if isinstance(target, str):
     target = ast.parse(target, mode='exec')
   if isinstance(target, ast.Expression):
@@ -191,8 +198,8 @@ def safe_assign(target: Union[str, ast.AST], value: any, locals: dict={}):
 
 
 def safe_exec(node: Union[str, ast.AST], locals: dict={}):
-  #  exec(node, locals)
-  #  return
+  """ Safely execute a Python statement with provided local variables.
+  """
   if isinstance(node, str):
     node = ast.parse(node, mode='exec')
   if isinstance(node.body, list):
@@ -224,15 +231,3 @@ def safe_exec(node: Union[str, ast.AST], locals: dict={}):
           target %= value
       else:
         raise RuntimeError("Expression not supported.")
-
-
-def main():
-  print("test")
-  exp = "x + 3"
-  array = np.zeros((6, ), dtype=int)
-  print(safe_eval(exp, locals={"x": array}))
-
-
-if __name__ == '__main__':
-  main()
-

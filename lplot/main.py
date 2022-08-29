@@ -1,15 +1,20 @@
 import ast
 import argparse
 import numpy as np
+from typing import Union
 import matplotlib.pyplot as plt
+from abc import ABC, abstractmethod, abstractproperty
 
 from lplot.safe_eval import safe_exec
 from lplot.wheels import mpl_colorwheel, wheel_of_markers, wheel_of_linestyles, wheel_of_none
 
 
-class Backend:
+class Backend(ABC):
+  """ Abstract class for the plotting backend.
+  """
 
-  def __init__(self, display):
+  @abstractmethod
+  def __init__(self, display, dim):
     self.display = display
 
   @property
@@ -20,10 +25,33 @@ class Backend:
   def display(self, display):
     self._display = display
 
+  @abstractmethod
+  def show(self):
+    """ Show the plot.
+    """
+    return NotImplemented
+
+
+  @abstractmethod
+  def savefig(self, *args, **kwargs):
+    """ Save the plot into a file.
+    """
+    return NotImplemented
+
 
 class MPLBackend(Backend):
+  """ Matplotlib plotting backend.
 
-  def __init__(self, display, dim=(6.4, 4.8)):
+  Parameters
+  ----------
+  display: bool
+      Whether the image will be displayed. Different MPL backend will be chosen
+      depending on this option.
+  dim: Union[tuple[float, float], str], default to (6.4, 4.8)
+      Dimension of the figure.
+  """
+
+  def __init__(self, display: bool, dim: Union[tuple[float, float], str]=(6.4, 4.8)):
     self.display = display
     import matplotlib.pyplot as plt
     if isinstance(dim, str):
@@ -41,25 +69,35 @@ class MPLBackend(Backend):
       }
 
 
-  def get_default_fontsize(self):
+  def get_default_fontsize(self) -> Union[float, str]:
+    """ Get default font size from the plotting backend.
+    """
     return self._plot_engine.rcParams["axes.titlesize"]
 
 
   @Backend.display.setter
-  def display(self, display):
+  def display(self, display: bool):
     self._display = display
     if not display:
       import matplotlib as mpl
       mpl.use("Agg")
 
 
-  def __getattr__(self, attr):
+  def __getattr__(self, attr: str) -> callable:
     if attr not in self._features:
       raise AttributeError("Attribite: {attr} not defined.".format(attr=attr))
     return getattr(self._plot_handle, self._features[attr])
 
 
-  def configure_plot(self, configs):
+  def configure_plot(self, configs: dict):
+    """
+    Configure the plot.
+
+    Parameters
+    ----------
+    configs: dict
+        Configurations to apply to the plot.
+    """
     ax = self._plot_handle
     ax.set_title(configs.get("title", None), fontsize=configs["fontsize"])
     ax.set_xlim(
@@ -83,10 +121,14 @@ class MPLBackend(Backend):
 
 
   def show(self):
+    """ Show the plot.
+    """
     self._plot_engine.show()
 
 
   def savefig(self, *args, **kwargs):
+    """ Save the plot into a file.
+    """
     self._plot_engine.savefig(*args, **kwargs)
 
 
@@ -96,6 +138,14 @@ backends = {
 
 
 class Plot:
+  """
+  Plot object
+
+  Parameters
+  ----------
+  title: str
+      Title of the plot.
+  """
 
 
   _valid_keys = ["linestyle", "marker", "color", "linewidth", "markercolor", "markersize",
@@ -107,7 +157,7 @@ class Plot:
 
   def __init__(
       self,
-      title=None,
+      title: str=None,
       ):
     self._title = title
     self._X = []
@@ -117,10 +167,22 @@ class Plot:
 
   def add_data(
       self,
-      data,
-      transform=None,
-      file_mode=False,
+      data: Union[str, np.ndarray],
+      transform: str=None,
+      file_mode: bool=False,
       ):
+    """
+    Add new dateset,
+
+    Parameters
+    ----------
+    data: Union[str, np.ndarray]
+        Dataset of path to the dataset file.
+    transform: str, default to None
+        Transformation to operate on the dataset.
+    file_mode: bool, default toFalse
+        Whether the whole file is treated as a single dataset.
+    """
     if isinstance(data, str):
       data = np.loadtxt(data)
     if not isinstance(data, np.ndarray):
@@ -149,8 +211,16 @@ class Plot:
 
   def set_transform(
       self,
-      transform,
+      transform: str,
       ):
+    """
+    Perform tranformation operation on the dataset.
+
+    Parameters
+    ----------
+    transform: str, default to None
+        Transformation to operate on the dataset.
+    """
     data = {"x": self._X, "y": self._Y}
     safe_exec(transform, locals=data)
     self._X = data["x"]
@@ -159,17 +229,35 @@ class Plot:
 
   def set_figure_property(
       self,
-      key=None,
-      value=None,
+      key: str,
+      value: Union[str, int, float],
       ):
+    """
+    Update a single figure property.
+
+    Parameters
+    ----------
+    key: str
+        Name of the figure property.
+    value: Union[str, int, float]
+        Value of the figure property.
+    """
     if key in self._valid_keys:
       self._figure_properties[key] = value
 
 
   def set_figure_properties(
       self,
-      properties,
+      properties: dict,
       ):
+    """
+    Update a bunch of figure properties.
+
+    Parameters
+    ----------
+    properties: dict
+        A dictionary of figure properties.
+    """
     properties = properties.copy()
     for key in self._valid_keys:
       if key in properties:
@@ -178,7 +266,15 @@ class Plot:
           self._check_item_specific_key(key)
 
 
-  def _check_item_specific_key(self, key):
+  def _check_item_specific_key(self, key: str):
+    """
+    Check whether the item specific key has the correct length.
+
+    Parameters
+    ----------
+    key: str
+        Name of the figure property.
+    """
     if key in self._item_specific_keys:
       if isinstance(self._figure_properties, str):
         self._figure_properties[key] = self._figure_properties[key].split(",")
@@ -187,16 +283,35 @@ class Plot:
 
 
   @property
-  def n_datasets(self):
+  def n_datasets(self) -> int:
+    """ Number of datasets.
+
+    Returns
+    -------
+    n_datasets: int
+    """
     return len(self._X)
 
 
   def make_plot(
       self,
-      backend="matplotlib",
-      show=True,
-      output=None,
+      backend: str="matplotlib",
+      show: bool=True,
+      output: str=None,
       ):
+    """
+    Create the plot
+
+    Parameters
+    ----------
+    backend: str, default to "matplotlib"
+        The plotting engine to actually draw the figure.
+    show: bool, default to True
+        Whether to show the figure.
+    output: str, default to None
+        Path to the output file for the figure to save into,
+        if None, the figure won't be saved.
+    """
     if backend in backends:
       backend = backends[backend](display=show)
     elif callable(backend):
