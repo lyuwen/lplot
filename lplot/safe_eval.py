@@ -103,8 +103,6 @@ def safe_eval(node_or_string: Union[str, ast.AST], locals: dict={}):
     if isinstance(node, ast.Name):
       if node.id in locals:
         if isinstance(locals[node.id], (Number, np.number, np.ndarray)):
-          # WARNING: There is a danger where the variable passed in is derived from the above types
-          # but with the operators overridded with malicious code.
           return locals[node.id]
       else:
         raise NameError("name \'{name}\' is not defined.".format(name=node.id))
@@ -142,6 +140,75 @@ def safe_eval(node_or_string: Union[str, ast.AST], locals: dict={}):
           return left % right
       return _convert_signed_num(node)
   return _convert(node_or_string)
+
+
+def eval_slice(slice, locals: dict={}):
+  if isinstance(slice, ast.Constant):
+    return safe_eval(slice, locals=locals)
+  elif isinstance(slice, ast.Slice):
+    return slice(
+        safe_eval(slice.lower, locals=locals),
+        safe_eval(slice.upper, locals=locals),
+        safe_eval(slice.step,  locals=locals),
+        )
+  elif isinstance(slice, ast.List):
+    return [safe_eval(elt, locals=locals) for elt in slice.elts]
+  elif isinstance(slice, ast.Tuple):
+    return tuple([safe_eval(elt, locals=locals) for elt in slice.elts])
+  else:
+    raise TypeError("Unsupported slice type for '{slice}'.".format(slice=slice))
+
+
+def safe_assign(target: Union[str, ast.AST], value: any, locals: dict={}):
+  if isinstance(target, str):
+    target = ast.parse(target, mode='exec')
+  if isinstance(target, ast.Expression):
+    target = target.body
+  if isinstance(target, ast.Name):
+    locals[target.id] = value
+  elif isinstance(target, ast.Attribute):
+    setattr(locals[target.value.id], target.attr, value)
+  elif isinstance(target, ast.Subscript):
+    slice = eval_slice(target.slice, locals=locals)
+    locals[target.id][slice] = value
+  else:
+    raise TypeError("Unsupported target type for '{target!s}'.".format(target=target))
+
+
+def safe_exec(node: Union[str, ast.AST], locals: dict={}):
+  #  exec(node, locals)
+  #  return
+  if isinstance(node, str):
+    node = ast.parse(node, mode='exec')
+  if isinstance(node.body, list):
+    for n in node.body:
+      if isinstance(n, ast.Assign):
+        targets = n.targets
+        value = safe_eval(n.value, locals=locals)
+        if isinstance(value, (tuple, list)) and len(value) == len(targets):
+          for i in range(len(targets)):
+            safe_assign(targets[i], value[i], locals=locals)
+        elif len(targets) == 1:
+          safe_assign(targets[0], value, locals=locals)
+        else:
+          raise ValueError("Mismatch between number of targets and number of values in the expression.")
+      elif isinstance(n, ast.AugAssign):
+        target = safe_eval(n.target, locals=locals)
+        value = safe_eval(n.value, locals=locals)
+        if isinstance(n.op, ast.Add):
+          target += value
+        elif isinstance(n.op, ast.Sub):
+          target -= value
+        elif isinstance(n.op, (ast.Mult)):
+          target *= value
+        elif isinstance(n.op, (ast.Div)):
+          target /= value
+        elif isinstance(n.op, (ast.FloorDiv)):
+          target //= value
+        elif isinstance(n.op, (ast.Mod)):
+          target %= value
+      else:
+        raise RuntimeError("Expression not supported.")
 
 
 def main():

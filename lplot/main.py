@@ -3,7 +3,7 @@ import argparse
 import numpy as np
 import matplotlib.pyplot as plt
 
-from lplot.safe_eval import safe_eval
+from lplot.safe_eval import safe_exec
 
 
 class Backend:
@@ -104,6 +104,26 @@ class Plot:
       raise ValueError("Input data is expected to be either 1 or 2 dimentional.")
     x = data[:, 0]
     y = data[:, 1:]
+    if transform is not None:
+      data = {"x": x, "y": y}
+      safe_exec(transform, locals=data)
+      x = data["x"]
+      y = data["y"]
+    if file_mode:
+      # Treat the entire file as a single dataset.
+      sekf._X.append(x)
+      sekf._Y.append(y)
+    else:
+      # Treat each column of the file as separate dataset.
+      for i in range(y.shape[1]):
+        self._X.append(x)
+        self._Y.append(y[:, i])
+
+
+  def set_transform(
+      self,
+      transform,
+      ):
     pass
 
 
@@ -126,6 +146,7 @@ class Plot:
 def main():
   parser = argparse.ArgumentParser()
   parser.add_argument("--file-mode", "--fs", "--fm", action="store_true", help="Treat each file as a dataset. Default is treating each column as a dataset.")
+  parser.add_argument("--title", "-T", help="Title of the plot.")
   parser.add_argument("--transform", "-t", help="Transform input dateset.")
   #
   group = parser.add_mutually_exclusive_group()#title='plot mode')
@@ -160,9 +181,21 @@ def main():
 
   print(args)
 
-  #  for file in args.data:
-  #    data = np.loadtxt(file)
-  #    plt.plot(data[:, 0], data[:, 1:])
+  plot = Plot(title=args.title)
+
+  for file_transform in args.data:
+    file_transform = file_transform.split(":")
+    file = file_transform.pop(0)
+    transform = None
+    if file_transform:
+      transform = file_transform.pop(0)
+    plot.add_data(
+        data=file,
+        transform=transform,
+        file_mode=args.file_mode,
+        )
+  print(f"{plot._X=}")
+  print(f"{plot._Y=}")
   #
   #  plt.show()
 
