@@ -148,6 +148,8 @@ def safe_eval(node_or_string: Union[str, ast.AST], locals: dict={}):
           return left // right
         elif isinstance(node.op, (ast.Mod)):
           return left % right
+        elif isinstance(node.op, (ast.Pow)):
+          return left ** right
       return _convert_signed_num(node)
   return _convert(node_or_string)
 
