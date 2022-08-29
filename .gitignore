@@ -3,3 +3,4 @@ build
 lplot.egg-info
 venv
 .DS_Store
+_build
