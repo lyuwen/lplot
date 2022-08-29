@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 from abc import ABC, abstractmethod, abstractproperty
 
 from lplot.safe_eval import safe_exec
-from lplot.wheels import mpl_colorwheel, wheel_of_markers, wheel_of_linestyles, wheel_of_none
+from lplot.wheels import Wheel, mpl_colorwheel, wheel_of_markers, wheel_of_linestyles, wheel_of_none
 
 
 class Backend(ABC):
@@ -118,6 +118,16 @@ class MPLBackend(Backend):
       ax.set_yticks(configs.get("yticks"))
       if "yticklabels" in configs:
         ax.set_yticklabels(configs.get("yticklabels"), fontsize=configs["fontsize"])
+    if configs.get("has_legend", False):
+      #  ax.legend()
+      #remove duplicates
+      handles, labels = ax.get_legend_handles_labels()
+      newLabels, newHandles = [], []
+      for handle, label in zip(handles, labels):
+        if label not in newLabels:
+          newLabels.append(label)
+          newHandles.append(handle)
+      ax.legend(newHandles, newLabels)
 
 
   def show(self):
@@ -276,7 +286,7 @@ class Plot:
         Name of the figure property.
     """
     if key in self._item_specific_keys:
-      if isinstance(self._figure_properties, str):
+      if isinstance(self._figure_properties[key], str):
         self._figure_properties[key] = self._figure_properties[key].split(",")
       if len(self._figure_properties[key]) != len(self._X):
         raise ValueError("Length of property configs for '{key}' does not match length of datasets.".format(key=key))
@@ -320,23 +330,24 @@ class Plot:
       raise ValueError("Length of X and Y does not match.")
     #
     if "color" in self._figure_properties:
-      color = iter(self._figure_properties[linestyle])
+      color = iter(self._figure_properties["color"])
     else:
       color = mpl_colorwheel
     if "linestyle" in self._figure_properties:
-      linestyle = iter(self._figure_properties[linestyle])
+      linestyle = iter(self._figure_properties["linestyle"])
     else:
-      linestyle = wheel_of_linestyles
+      linestyle = Wheel(["-"])
+      #  linestyle = wheel_of_linestyles
     if "marker" in self._figure_properties:
-      marker = iter(self._figure_properties[marker])
+      marker = iter(self._figure_properties["marker"])
     else:
       marker = wheel_of_none
     if "markercolor" in self._figure_properties:
-      markercolor = iter(self._figure_properties[markercolor])
+      markercolor = iter(self._figure_properties["markercolor"])
     else:
       markercolor = wheel_of_none
     if "legend" in self._figure_properties:
-      legend = iter(self._figure_properties[legend])
+      legend = iter(self._figure_properties["legend"])
       has_legend = True
     else:
       legend = wheel_of_none
@@ -357,6 +368,7 @@ class Plot:
       properties.pop(key, None)
     properties["title"] = self._title
     properties.setdefault("fontsize", backend.get_default_fontsize())
+    properties.setdefault("has_legend", has_legend)
     backend.configure_plot(properties)
     if output:
       backend.savefig(output)
@@ -402,6 +414,12 @@ def main():
   parser.add_argument("--show", "-p", action="store_true", help="Show plot.")
   parser.add_argument("--output", "--savefig", "-o", help="Save plot to file.")
   parser.add_argument("data", nargs="*", help="Data files.")
+
+  try:
+    import argcomplete
+    argcomplete.autocomplete(parser)
+  except ImportError:
+    pass
 
   args = parser.parse_args()
 
