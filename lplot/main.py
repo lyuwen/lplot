@@ -124,7 +124,11 @@ class Plot:
       self,
       transform,
       ):
-    pass
+    data = {"x": self._X, "y": self._Y}
+    print(transform, data)
+    safe_exec(transform, locals=data)
+    self._X = data["x"]
+    self._Y = data["y"]
 
 
   def set_figure_properties(
@@ -194,6 +198,10 @@ def main():
         transform=transform,
         file_mode=args.file_mode,
         )
+  print(f"{plot._X=}")
+  print(f"{plot._Y=}")
+  if args.transform:
+    plot.set_transform(args.transform)
   print(f"{plot._X=}")
   print(f"{plot._Y=}")
   #

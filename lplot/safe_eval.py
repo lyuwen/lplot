@@ -18,18 +18,25 @@ def _safety_check(locals: dict):
   check the types of each variable against the built-in number types and numpy number
   tyoes..
   """
+  if type(locals) != dict:
+    raise TypeError("Input variables 'locals' is not a dict type.")
+  for key, value in locals.items():
+    if not _safety_check_value(value):
+      raise TypeError("Type of input local variables '{name}' is not supported".format(name=key))
+
+def _safety_check_value(value: any):
   allowed_data_type = [int, float, complex, #np.int, np.float, np.complex, # These are deprecated
       np.int8, np.int16, np.int32, np.int64,
       np.float16, np.float32, np.float64, np.float128,
       np.complex64, np.complex128, np.complex256,
       ]
-  if type(locals) != dict:
-    raise TypeError("Input variables 'locals' is not a dict type.")
-  for key, value in locals.items():
-    if not ((type(value) in allowed_data_type) \
-        or \
-        ((type(value) == np.ndarray) and value.dtype.type in allowed_data_type)):
-      raise TypeError("Type of input local variables '{name}' is not supported".format(name=key))
+  return ( \
+      (type(value) in allowed_data_type) \
+      or \
+      ((type(value) == np.ndarray) and value.dtype.type in allowed_data_type) \
+      or \
+      ((type(value) == list) and all([_safety_check_value(val) for val in value])) \
+      )
 
 
 
@@ -102,10 +109,13 @@ def safe_eval(node_or_string: Union[str, ast.AST], locals: dict={}):
       node = getattr(node, "body", node)
     if isinstance(node, ast.Name):
       if node.id in locals:
-        if isinstance(locals[node.id], (Number, np.number, np.ndarray)):
+        if isinstance(locals[node.id], (Number, np.number, np.ndarray, list)):
           return locals[node.id]
       else:
         raise NameError("name \'{name}\' is not defined.".format(name=node.id))
+    elif isinstance(node, ast.Subscript):
+      slice = eval_slice(node.slice, locals=locals)
+      return _convert(node.value)[slice]
     elif isinstance(node, ast.Call):
       return _convert_call(node)
     else:
@@ -170,7 +180,10 @@ def safe_assign(target: Union[str, ast.AST], value: any, locals: dict={}):
     setattr(locals[target.value.id], target.attr, value)
   elif isinstance(target, ast.Subscript):
     slice = eval_slice(target.slice, locals=locals)
-    locals[target.id][slice] = value
+    if hasattr(target.value, "id"):
+      locals[target.value.id][slice] = value
+    else:
+      raise TypeError("Unsupported target expression for '{target!s}'.".format(target=target))
   else:
     raise TypeError("Unsupported target type for '{target!s}'.".format(target=target))
 
