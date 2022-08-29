@@ -1,7 +1,7 @@
-import fractions
+import math
 
 
-gcd = fractions.gcd
+gcd = math.gcd
 
 
 def factorial(x):
