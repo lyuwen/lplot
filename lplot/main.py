@@ -339,6 +339,7 @@ class Plot:
 
   def make_plot(
       self,
+      mode: str="plot",
       backend: str="matplotlib",
       show: bool=True,
       output: str=None,
@@ -348,6 +349,8 @@ class Plot:
 
     Parameters
     ----------
+    mode: str, default to "plot"
+        Mode of the plot.
     backend: str, default to "matplotlib"
         The plotting engine to actually draw the figure.
     show: bool, default to True
@@ -393,7 +396,7 @@ class Plot:
       has_legend = False
     #
     for i in range(self.n_datasets):
-      backend.plot(
+      getattr(backend, mode)(
           self._X[i], self._Y[i],
           linestyle=next(linestyle),
           marker=next(marker),
@@ -423,12 +426,13 @@ def main():
   parser.add_argument("--transform", "-t", help="Transform input dateset.")
   #
   group = parser.add_mutually_exclusive_group()#title='plot mode')
+  group.add_argument("--mode", default="plot", choices=["plot"], help="Plot modes.")
   #  group.add_argument("--mode", default="plot", choices=["plot", "scatter", "histogram", "pie", "bar"], help="Plot modes.")
-  group.add_argument('--plot', action="store_const", const="plot", dest="mode", help='Plot lines')
-  group.add_argument('--scatter', action="store_const", const="scatter", dest="mode", help='Scatter plot')
-  group.add_argument('--histogram', action="store_const", const="histogram", dest="mode", help='Histogram plot')
-  group.add_argument('--pie', action="store_const", const="pie", dest="mode", help='Pie plot')
-  group.add_argument('--bar', action="store_const", const="bar", dest="mode", help='Bar plot')
+  #  group.add_argument('--plot', action="store_const", const="plot", dest="mode", help='Plot lines')
+  #  group.add_argument('--scatter', action="store_const", const="scatter", dest="mode", help='Scatter plot')
+  #  group.add_argument('--histogram', action="store_const", const="histogram", dest="mode", help='Histogram plot')
+  #  group.add_argument('--pie', action="store_const", const="pie", dest="mode", help='Pie plot')
+  #  group.add_argument('--bar', action="store_const", const="bar", dest="mode", help='Bar plot')
   # Plot configs
   parser.add_argument("--dim", default="6.4x4.8", help="Plot dimension.")
   parser.add_argument("--linestyle", "--ls", "-l", help="Line styles.")
@@ -488,6 +492,7 @@ def main():
   plot.set_figure_properties(figure_properties)
   #
   plot.make_plot(
+      mode=args.mode,
       show=args.show,
       output=args.output,
       )
