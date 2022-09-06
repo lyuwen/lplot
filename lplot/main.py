@@ -1,4 +1,4 @@
-import ast
+import glob
 import argparse
 import numpy as np
 from typing import Union
@@ -111,11 +111,11 @@ class MPLBackend(Backend):
     ax.set_xlabel(configs.get("xlabel", None), fontsize=configs["fontsize"])
     ax.set_ylabel(configs.get("ylabel", None), fontsize=configs["fontsize"])
     if "xticks" in configs:
-      ax.set_xticks(configs.get("xticks"))
+      ax.set_xticks([float(i) for i in configs.get("xticks")])
       if "xticklabels" in configs:
         ax.set_xticklabels(configs.get("xticklabels"), fontsize=configs["fontsize"])
     if "yticks" in configs:
-      ax.set_yticks(configs.get("yticks"))
+      ax.set_yticks([float(i) for i in configs.get("yticks")])
       if "yticklabels" in configs:
         ax.set_yticklabels(configs.get("yticklabels"), fontsize=configs["fontsize"])
     if configs.get("has_legend", False):
@@ -163,6 +163,7 @@ class Plot:
       "yticks", "yticklabels", "xlabel", "ylabel"
       ]
   _item_specific_keys = ["linestyle", "marker", "color", "markercolor", "legend", ]
+  _item_specific_keys_allow_fail = ["legend", ]
 
 
   def __init__(
@@ -172,6 +173,7 @@ class Plot:
     self._title = title
     self._X = []
     self._Y = []
+    self._datalabel = []
     self._figure_properties = {}
 
 
@@ -197,7 +199,10 @@ class Plot:
         Whether the whole file is treated as a single dataset.
     """
     if isinstance(data, str):
+      filename = data
       data = np.loadtxt(data)
+    else:
+      filename = "Dataset({n})".format(n=len(self._X))
     if not isinstance(data, np.ndarray):
       raise TypeError("Input data is expected to be a str to a datafile or a numpy array.")
     if len(data.shape) == 1:
@@ -234,11 +239,13 @@ class Plot:
       # Treat the entire file as a single dataset.
       self._X.append(x)
       self._Y.append(y)
+      self._datalabel.append(filename)
     else:
       # Treat each column of the file as separate dataset.
       for i in range(y.shape[1]):
         self._X.append(x)
         self._Y.append(y[:, i])
+        self._datalabel.append("{} {}".format(filename, i))
 
 
   def set_transform(
@@ -310,7 +317,12 @@ class Plot:
     if key in self._item_specific_keys:
       if isinstance(self._figure_properties[key], str):
         self._figure_properties[key] = self._figure_properties[key].split(",")
-      if len(self._figure_properties[key]) != len(self._X):
+      if len(self._figure_properties[key]) == 1:
+        if self._figure_properties[key][0] == "auto":
+          self._figure_properties[key] = "auto"
+        else:
+          self._figure_properties[key] = self._figure_properties[key] * self.n_datasets
+      elif (len(self._figure_properties[key]) != self.n_datasets) and (key not in self._item_specific_keys_allow_fail):
         raise ValueError("Length of property configs for '{key}' does not match length of datasets.".format(key=key))
 
 
@@ -369,7 +381,12 @@ class Plot:
     else:
       markercolor = wheel_of_none
     if "legend" in self._figure_properties:
-      legend = iter(self._figure_properties["legend"])
+      if self._figure_properties["legend"] == "auto":
+        legend = iter(self._datalabel)
+      else:
+        if len(self._figure_properties["legend"]) != self.n_datasets:
+          raise ValueError("Length of legend does not match the number of datasets.")
+        legend = iter(self._figure_properties["legend"])
       has_legend = True
     else:
       legend = wheel_of_none
@@ -419,13 +436,14 @@ def main():
   parser.add_argument("--color", "--linecolor", "--lc", "-c", help="Line colors.")
   parser.add_argument("--linewidth", "--lw", help="Line colors.")
   parser.add_argument("--markercolor", "--mc", help="Symbol colors.")
-  parser.add_argument("--markersize", "--ms", help="Symbol colors.")
-  parser.add_argument("--legend", "-g", help="Legends for datasets.")
-  parser.add_argument("--xmin", help="Lower boundary of x value in the plot.")
-  parser.add_argument("--xmax", help="Higher boundary of x value in the plot.")
-  parser.add_argument("--ymin", help="Lower boundary of y value in the plot.")
-  parser.add_argument("--ymax", help="Higher boundary of y value in the plot.")
-  parser.add_argument("--fontsize", help="Fontsize.")
+  parser.add_argument("--markersize", "--ms", type=float, help="Symbol colors.")
+  parser.add_argument("--legend", "-g", nargs="?", const="auto", help="Legends for datasets.")
+  parser.add_argument("--auto-legend", "-G", dest="legend", action="store_const", const="auto", help="Automatic legends for datasets.")
+  parser.add_argument("--xmin", type=int, help="Lower boundary of x value in the plot.")
+  parser.add_argument("--xmax", type=int, help="Higher boundary of x value in the plot.")
+  parser.add_argument("--ymin", type=int, help="Lower boundary of y value in the plot.")
+  parser.add_argument("--ymax", type=int, help="Higher boundary of y value in the plot.")
+  parser.add_argument("--fontsize", type=float, help="Fontsize.")
   parser.add_argument("--xticks", "--xt", help="Tick points for x axis.")
   parser.add_argument("--xticklabels", "--xtl", help="Tick labels for x axis.")
   parser.add_argument("--yticks", "--yt", help="Tick points for y axis.")
@@ -456,12 +474,13 @@ def main():
       data_range = file_range_transform.pop(0).strip() or None
     if file_range_transform:
       transform = file_range_transform.pop(0).strip()
-    plot.add_data(
-        data=file,
-        data_range=data_range,
-        transform=transform,
-        file_mode=args.file_mode,
-        )
+    for f in glob.glob(file):
+      plot.add_data(
+          data=f,
+          data_range=data_range,
+          transform=transform,
+          file_mode=args.file_mode,
+          )
   if args.transform:
     plot.set_transform(args.transform)
   #
