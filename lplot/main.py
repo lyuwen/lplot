@@ -178,6 +178,7 @@ class Plot:
   def add_data(
       self,
       data: Union[str, np.ndarray],
+      data_range: Union[str, slice, list],
       transform: str=None,
       file_mode: bool=False,
       ):
@@ -188,6 +189,8 @@ class Plot:
     ----------
     data: Union[str, np.ndarray]
         Dataset of path to the dataset file.
+    data_range: Union[str, slice, list]
+        Columns of the data to use.
     transform: str, default to None
         Transformation to operate on the dataset.
     file_mode: bool, default toFalse
@@ -203,6 +206,25 @@ class Plot:
       raise ValueError("Input data is expected to be either 1 or 2 dimentional.")
     x = data[:, 0]
     y = data[:, 1:]
+    if data_range is not None:
+      if isinstance(data_range, str):
+        data_range_str = data_range
+        data_range = []
+        for i in data_range_str.split(","):
+          if i.find(":") > -1:
+            slice_spec = i.split(":")
+            start = int(slice_spec.pop(0).strip() or 0)
+            stop = int(slice_spec.pop(0).strip() or y.shape[1])
+            step = 1
+            if slice_spec:
+              step = int(slice_spec.pop(0).strip() or 1)
+            for ii in range(start, stop, step):
+              data_range.append(ii)
+          else:
+            data_range.append(int(i))
+      elif not isinstance(data_range, (list, slice)):
+        raise TypeError("Input data_range is expected to be a str, list or slice.")
+      y = y[:, data_range]
     if transform is not None:
       data = {"x": x, "y": y}
       safe_exec(transform, locals=data)
@@ -425,19 +447,26 @@ def main():
 
   plot = Plot(title=args.title)
 
-  for file_transform in args.data:
-    file_transform = file_transform.split(":")
-    file = file_transform.pop(0)
+  for file_range_transform in args.data:
+    file_range_transform = file_range_transform.split(":")
+    file = file_range_transform.pop(0)
+    data_range = None
     transform = None
-    if file_transform:
-      transform = file_transform.pop(0).strip()
+    if file_range_transform:
+      data_range = file_range_transform.pop(0).strip() or None
+    if file_range_transform:
+      transform = file_range_transform.pop(0).strip()
+    print(file_range_transform, file, data_range, transform)
     plot.add_data(
         data=file,
+        data_range=data_range,
         transform=transform,
         file_mode=args.file_mode,
         )
   if args.transform:
     plot.set_transform(args.transform)
+  print("X", plot._X)
+  print("Y", plot._Y)
   #
   figure_properties = {key:getattr(args, key) for key in plot._valid_keys if getattr(args, key, None) is not None}
   plot.set_figure_properties(figure_properties)

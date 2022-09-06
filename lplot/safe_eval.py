@@ -57,6 +57,8 @@ def safe_eval(node_or_string: Union[str, ast.AST], locals: dict={}) -> Union[Num
   locals : dict
       Only generic number types, numpy number types, and numpy.ndarray are supported as local variables.
   """
+  if node_or_string is None:
+    return None
   _safety_check(locals)
   valid_numpy_functions = [
       "sum", "sin", "cos", "tan", "arcsin", "arccos", "arctan",
@@ -157,23 +159,23 @@ def safe_eval(node_or_string: Union[str, ast.AST], locals: dict={}) -> Union[Num
   return _convert(node_or_string)
 
 
-def eval_slice(slice, locals: dict={}) -> slice:
+def eval_slice(sl, locals: dict={}) -> slice:
   """ Evaluate the Slice AST object and reconstruct the slice object.
   """
-  if isinstance(slice, ast.Constant):
-    return safe_eval(slice, locals=locals)
-  elif isinstance(slice, ast.Slice):
+  if isinstance(sl, ast.Constant):
+    return safe_eval(sl, locals=locals)
+  elif isinstance(sl, ast.Slice):
     return slice(
-        safe_eval(slice.lower, locals=locals),
-        safe_eval(slice.upper, locals=locals),
-        safe_eval(slice.step,  locals=locals),
+        safe_eval(sl.lower, locals=locals),
+        safe_eval(sl.upper, locals=locals),
+        safe_eval(sl.step,  locals=locals),
         )
-  elif isinstance(slice, ast.List):
-    return [safe_eval(elt, locals=locals) for elt in slice.elts]
-  elif isinstance(slice, ast.Tuple):
-    return tuple([safe_eval(elt, locals=locals) for elt in slice.elts])
+  elif isinstance(sl, ast.List):
+    return [safe_eval(elt, locals=locals) for elt in sl.elts]
+  elif isinstance(sl, ast.Tuple):
+    return tuple([eval_slice(elt, locals=locals) for elt in sl.elts])
   else:
-    raise TypeError("Unsupported slice type for '{slice}'.".format(slice=slice))
+    raise TypeError("Unsupported slice type for '{sl}'.".format(sl=sl))
 
 
 def safe_assign(target: Union[str, ast.AST], value: any, locals: dict={}):
