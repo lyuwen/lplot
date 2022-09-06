@@ -456,7 +456,6 @@ def main():
       data_range = file_range_transform.pop(0).strip() or None
     if file_range_transform:
       transform = file_range_transform.pop(0).strip()
-    print(file_range_transform, file, data_range, transform)
     plot.add_data(
         data=file,
         data_range=data_range,
@@ -465,8 +464,6 @@ def main():
         )
   if args.transform:
     plot.set_transform(args.transform)
-  print("X", plot._X)
-  print("Y", plot._Y)
   #
   figure_properties = {key:getattr(args, key) for key in plot._valid_keys if getattr(args, key, None) is not None}
   plot.set_figure_properties(figure_properties)
