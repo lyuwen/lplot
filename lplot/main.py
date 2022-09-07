@@ -1,11 +1,13 @@
 import glob
 import argparse
-import numpy as np
 from typing import Union
-import matplotlib.pyplot as plt
 from abc import ABC, abstractmethod, abstractproperty
+import yaml
+import numpy as np
+import matplotlib.pyplot as plt
 
 from lplot.safe_eval import safe_exec
+from lplot.utils import StoreConfigAction
 from lplot.wheels import Wheel, mpl_colorwheel, wheel_of_markers, wheel_of_linestyles, wheel_of_none
 
 
@@ -422,6 +424,10 @@ class Plot:
 
 def main():
   parser = argparse.ArgumentParser()
+  #
+  parser.add_argument("--config", action="store_true", help="Load the input argument as a configuration file.")
+  parser.add_argument("--save-config", nargs="?", const="config.yml", help="Save the input as a configuration file.")
+  #
   parser.add_argument("--file-mode", "--fs", "--fm", action="store_true", help="Treat each file as a dataset. Default is treating each column as a dataset.")
   parser.add_argument("--title", "-T", help="Title of the plot.")
   parser.add_argument("--transform", "-t", help="Transform input dateset.")
@@ -468,6 +474,11 @@ def main():
     pass
 
   args = parser.parse_args()
+  if args.config:
+    StoreConfigAction(None, dest="config")(parser, args, args.data[0])
+  if args.save_config is not None:
+    tmp_config = {k: v for k, v in args.__dict__.items() if ((k not in ["config", "save_config"]) and (v is not None))}
+    yaml.safe_dump(tmp_config, open(args.save_config, "w"))
 
   plot = Plot(title=args.title)
 
