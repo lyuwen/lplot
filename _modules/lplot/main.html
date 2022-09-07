@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>lplot.main &mdash; LPlot 0+untagged.1.gbe82453 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/custom_style.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/clipboard.min.js"></script>
+        <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> LPlot
+          </a>
+              <div class="version">
+                0+untagged.1.gbe82453
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../lplot.html">lplot package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">LPlot</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+      <li>lplot.main</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for lplot.main</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">glob</span>
+<span class="kn">import</span> <span class="nn">argparse</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span>
+<span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABC</span><span class="p">,</span> <span class="n">abstractmethod</span><span class="p">,</span> <span class="n">abstractproperty</span>
+<span class="kn">import</span> <span class="nn">yaml</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="kn">from</span> <span class="nn">lplot.safe_eval</span> <span class="kn">import</span> <span class="n">safe_exec</span>
+<span class="kn">from</span> <span class="nn">lplot.utils</span> <span class="kn">import</span> <span class="n">StoreConfigAction</span>
+<span class="kn">from</span> <span class="nn">lplot.wheels</span> <span class="kn">import</span> <span class="n">Wheel</span><span class="p">,</span> <span class="n">mpl_colorwheel</span><span class="p">,</span> <span class="n">wheel_of_markers</span><span class="p">,</span> <span class="n">wheel_of_linestyles</span><span class="p">,</span> <span class="n">wheel_of_none</span>
+
+
+<div class="viewcode-block" id="Backend"><a class="viewcode-back" href="../../lplot.html#lplot.main.Backend">[docs]</a><span class="k">class</span> <span class="nc">Backend</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
+  <span class="sd">&quot;&quot;&quot; Abstract class for the plotting backend.</span>
+<span class="sd">  &quot;&quot;&quot;</span>
+
+  <span class="nd">@abstractmethod</span>
+  <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">display</span><span class="p">,</span> <span class="n">dim</span><span class="p">):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">display</span> <span class="o">=</span> <span class="n">display</span>
+
+  <span class="nd">@property</span>
+  <span class="k">def</span> <span class="nf">display</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_display</span>
+
+  <span class="nd">@display</span><span class="o">.</span><span class="n">setter</span>
+  <span class="k">def</span> <span class="nf">display</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">display</span><span class="p">):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_display</span> <span class="o">=</span> <span class="n">display</span>
+
+<div class="viewcode-block" id="Backend.show"><a class="viewcode-back" href="../../lplot.html#lplot.main.Backend.show">[docs]</a>  <span class="nd">@abstractmethod</span>
+  <span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Show the plot.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="bp">NotImplemented</span></div>
+
+
+<div class="viewcode-block" id="Backend.savefig"><a class="viewcode-back" href="../../lplot.html#lplot.main.Backend.savefig">[docs]</a>  <span class="nd">@abstractmethod</span>
+  <span class="k">def</span> <span class="nf">savefig</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Save the plot into a file.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="bp">NotImplemented</span></div></div>
+
+
+<div class="viewcode-block" id="MPLBackend"><a class="viewcode-back" href="../../lplot.html#lplot.main.MPLBackend">[docs]</a><span class="k">class</span> <span class="nc">MPLBackend</span><span class="p">(</span><span class="n">Backend</span><span class="p">):</span>
+  <span class="sd">&quot;&quot;&quot; Matplotlib plotting backend.</span>
+
+<span class="sd">  Parameters</span>
+<span class="sd">  ----------</span>
+<span class="sd">  display: bool</span>
+<span class="sd">      Whether the image will be displayed. Different MPL backend will be chosen</span>
+<span class="sd">      depending on this option.</span>
+<span class="sd">  dim: Union[tuple[float, float], str], default to (6.4, 4.8)</span>
+<span class="sd">      Dimension of the figure.</span>
+<span class="sd">  &quot;&quot;&quot;</span>
+
+  <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">display</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">dim</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span> <span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="p">(</span><span class="mf">6.4</span><span class="p">,</span> <span class="mf">4.8</span><span class="p">)):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">display</span> <span class="o">=</span> <span class="n">display</span>
+    <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dim</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+      <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">dim</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;x&quot;</span><span class="p">)</span>
+      <span class="n">dim</span> <span class="o">=</span> <span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="nb">float</span><span class="p">(</span><span class="n">y</span><span class="p">))</span>
+    <span class="n">figure</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="n">dim</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_plot_engine</span> <span class="o">=</span> <span class="n">plt</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_plot_handle</span> <span class="o">=</span> <span class="n">ax</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_features</span> <span class="o">=</span> <span class="p">{</span>
+      <span class="s2">&quot;plot&quot;</span><span class="p">:</span> <span class="s2">&quot;plot&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;scatter&quot;</span><span class="p">:</span> <span class="s2">&quot;scatter&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;histogram&quot;</span><span class="p">:</span> <span class="s2">&quot;hist&quot;</span><span class="p">,</span> 
+      <span class="s2">&quot;pie&quot;</span><span class="p">:</span> <span class="s2">&quot;pie&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;bar&quot;</span><span class="p">:</span> <span class="s2">&quot;bar&quot;</span><span class="p">,</span>
+      <span class="p">}</span>
+
+
+<div class="viewcode-block" id="MPLBackend.get_default_fontsize"><a class="viewcode-back" href="../../lplot.html#lplot.main.MPLBackend.get_default_fontsize">[docs]</a>  <span class="k">def</span> <span class="nf">get_default_fontsize</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
+    <span class="sd">&quot;&quot;&quot; Get default font size from the plotting backend.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plot_engine</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;axes.titlesize&quot;</span><span class="p">]</span></div>
+
+
+  <span class="nd">@Backend</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">setter</span>
+  <span class="k">def</span> <span class="nf">display</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">display</span><span class="p">:</span> <span class="nb">bool</span><span class="p">):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_display</span> <span class="o">=</span> <span class="n">display</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">display</span><span class="p">:</span>
+      <span class="kn">import</span> <span class="nn">matplotlib</span> <span class="k">as</span> <span class="nn">mpl</span>
+      <span class="n">mpl</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s2">&quot;Agg&quot;</span><span class="p">)</span>
+
+
+  <span class="k">def</span> <span class="fm">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">callable</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">attr</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_features</span><span class="p">:</span>
+      <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="s2">&quot;Attribite: </span><span class="si">{attr}</span><span class="s2"> not defined.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">attr</span><span class="o">=</span><span class="n">attr</span><span class="p">))</span>
+    <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_plot_handle</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_features</span><span class="p">[</span><span class="n">attr</span><span class="p">])</span>
+
+
+<div class="viewcode-block" id="MPLBackend.configure_plot"><a class="viewcode-back" href="../../lplot.html#lplot.main.MPLBackend.configure_plot">[docs]</a>  <span class="k">def</span> <span class="nf">configure_plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">configs</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Configure the plot.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    configs: dict</span>
+<span class="sd">        Configurations to apply to the plot.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plot_handle</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">configs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;title&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="n">fontsize</span><span class="o">=</span><span class="n">configs</span><span class="p">[</span><span class="s2">&quot;fontsize&quot;</span><span class="p">])</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span>
+        <span class="n">configs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;xmin&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+        <span class="n">configs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;xmax&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+        <span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span>
+        <span class="n">configs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ymin&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+        <span class="n">configs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ymax&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+        <span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="n">configs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;xlabel&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="n">fontsize</span><span class="o">=</span><span class="n">configs</span><span class="p">[</span><span class="s2">&quot;fontsize&quot;</span><span class="p">])</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="n">configs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ylabel&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="n">fontsize</span><span class="o">=</span><span class="n">configs</span><span class="p">[</span><span class="s2">&quot;fontsize&quot;</span><span class="p">])</span>
+    <span class="k">if</span> <span class="s2">&quot;xticks&quot;</span> <span class="ow">in</span> <span class="n">configs</span><span class="p">:</span>
+      <span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">([</span><span class="nb">float</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">configs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;xticks&quot;</span><span class="p">)])</span>
+      <span class="k">if</span> <span class="s2">&quot;xticklabels&quot;</span> <span class="ow">in</span> <span class="n">configs</span><span class="p">:</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">(</span><span class="n">configs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;xticklabels&quot;</span><span class="p">),</span> <span class="n">fontsize</span><span class="o">=</span><span class="n">configs</span><span class="p">[</span><span class="s2">&quot;fontsize&quot;</span><span class="p">])</span>
+    <span class="k">if</span> <span class="s2">&quot;yticks&quot;</span> <span class="ow">in</span> <span class="n">configs</span><span class="p">:</span>
+      <span class="n">ax</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">([</span><span class="nb">float</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">configs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;yticks&quot;</span><span class="p">)])</span>
+      <span class="k">if</span> <span class="s2">&quot;yticklabels&quot;</span> <span class="ow">in</span> <span class="n">configs</span><span class="p">:</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_yticklabels</span><span class="p">(</span><span class="n">configs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;yticklabels&quot;</span><span class="p">),</span> <span class="n">fontsize</span><span class="o">=</span><span class="n">configs</span><span class="p">[</span><span class="s2">&quot;fontsize&quot;</span><span class="p">])</span>
+    <span class="k">if</span> <span class="n">configs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;has_legend&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
+      <span class="c1">#  ax.legend()</span>
+      <span class="c1">#remove duplicates</span>
+      <span class="n">handles</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">get_legend_handles_labels</span><span class="p">()</span>
+      <span class="n">newLabels</span><span class="p">,</span> <span class="n">newHandles</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+      <span class="k">for</span> <span class="n">handle</span><span class="p">,</span> <span class="n">label</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">handles</span><span class="p">,</span> <span class="n">labels</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">label</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">newLabels</span><span class="p">:</span>
+          <span class="n">newLabels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">label</span><span class="p">)</span>
+          <span class="n">newHandles</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">handle</span><span class="p">)</span>
+      <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">newHandles</span><span class="p">,</span> <span class="n">newLabels</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="MPLBackend.show"><a class="viewcode-back" href="../../lplot.html#lplot.main.MPLBackend.show">[docs]</a>  <span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Show the plot.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_plot_engine</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="MPLBackend.savefig"><a class="viewcode-back" href="../../lplot.html#lplot.main.MPLBackend.savefig">[docs]</a>  <span class="k">def</span> <span class="nf">savefig</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Save the plot into a file.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_plot_engine</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div></div>
+
+
+<span class="n">backends</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;matplotlib&quot;</span><span class="p">:</span> <span class="n">MPLBackend</span><span class="p">,</span>
+    <span class="p">}</span>
+
+
+<div class="viewcode-block" id="Plot"><a class="viewcode-back" href="../../lplot.html#lplot.main.Plot">[docs]</a><span class="k">class</span> <span class="nc">Plot</span><span class="p">:</span>
+  <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">  Plot object</span>
+
+<span class="sd">  Parameters</span>
+<span class="sd">  ----------</span>
+<span class="sd">  title: str</span>
+<span class="sd">      Title of the plot.</span>
+<span class="sd">  &quot;&quot;&quot;</span>
+
+
+  <span class="n">_valid_keys</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;linestyle&quot;</span><span class="p">,</span> <span class="s2">&quot;marker&quot;</span><span class="p">,</span> <span class="s2">&quot;color&quot;</span><span class="p">,</span> <span class="s2">&quot;linewidth&quot;</span><span class="p">,</span> <span class="s2">&quot;markercolor&quot;</span><span class="p">,</span> <span class="s2">&quot;markersize&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;legend&quot;</span><span class="p">,</span> <span class="s2">&quot;xmin&quot;</span><span class="p">,</span> <span class="s2">&quot;xmax&quot;</span><span class="p">,</span> <span class="s2">&quot;ymin&quot;</span><span class="p">,</span> <span class="s2">&quot;ymax&quot;</span><span class="p">,</span> <span class="s2">&quot;fontsize&quot;</span><span class="p">,</span> <span class="s2">&quot;xticks&quot;</span><span class="p">,</span> <span class="s2">&quot;xticklabels&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;yticks&quot;</span><span class="p">,</span> <span class="s2">&quot;yticklabels&quot;</span><span class="p">,</span> <span class="s2">&quot;xlabel&quot;</span><span class="p">,</span> <span class="s2">&quot;ylabel&quot;</span>
+      <span class="p">]</span>
+  <span class="n">_item_specific_keys</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;linestyle&quot;</span><span class="p">,</span> <span class="s2">&quot;marker&quot;</span><span class="p">,</span> <span class="s2">&quot;color&quot;</span><span class="p">,</span> <span class="s2">&quot;markercolor&quot;</span><span class="p">,</span> <span class="s2">&quot;legend&quot;</span><span class="p">,</span> <span class="p">]</span>
+  <span class="n">_item_specific_keys_allow_fail</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;legend&quot;</span><span class="p">,</span> <span class="p">]</span>
+
+
+  <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+      <span class="bp">self</span><span class="p">,</span>
+      <span class="n">title</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+      <span class="p">):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_title</span> <span class="o">=</span> <span class="n">title</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_X</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_Y</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_datalabel</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_figure_properties</span> <span class="o">=</span> <span class="p">{}</span>
+
+
+<div class="viewcode-block" id="Plot.add_data"><a class="viewcode-back" href="../../lplot.html#lplot.main.Plot.add_data">[docs]</a>  <span class="k">def</span> <span class="nf">add_data</span><span class="p">(</span>
+      <span class="bp">self</span><span class="p">,</span>
+      <span class="n">data</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">],</span>
+      <span class="n">data_range</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">slice</span><span class="p">,</span> <span class="nb">list</span><span class="p">],</span>
+      <span class="n">transform</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+      <span class="n">file_mode</span><span class="p">:</span> <span class="nb">bool</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+      <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Add new dateset,</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    data: Union[str, np.ndarray]</span>
+<span class="sd">        Dataset of path to the dataset file.</span>
+<span class="sd">    data_range: Union[str, slice, list]</span>
+<span class="sd">        Columns of the data to use.</span>
+<span class="sd">    transform: str, default to None</span>
+<span class="sd">        Transformation to operate on the dataset.</span>
+<span class="sd">    file_mode: bool, default toFalse</span>
+<span class="sd">        Whether the whole file is treated as a single dataset.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+      <span class="n">filename</span> <span class="o">=</span> <span class="n">data</span>
+      <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+      <span class="n">filename</span> <span class="o">=</span> <span class="s2">&quot;Dataset(</span><span class="si">{n}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_X</span><span class="p">))</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+      <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Input data is expected to be a str to a datafile or a numpy array.&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+      <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)),</span> <span class="n">data</span><span class="p">])</span><span class="o">.</span><span class="n">T</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
+      <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Input data is expected to be either 1 or 2 dimentional.&quot;</span><span class="p">)</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">data</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">data</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">:]</span>
+    <span class="k">if</span> <span class="n">data_range</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+      <span class="n">delimiter</span> <span class="o">=</span> <span class="s2">&quot;..&quot;</span>
+      <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data_range</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">data_range_str</span> <span class="o">=</span> <span class="n">data_range</span>
+        <span class="n">data_range</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">data_range_str</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">):</span>
+          <span class="k">if</span> <span class="n">i</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">delimiter</span><span class="p">)</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="n">slice_spec</span> <span class="o">=</span> <span class="n">i</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">delimiter</span><span class="p">)</span>
+            <span class="n">start</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">slice_spec</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="ow">or</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="n">stop</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">slice_spec</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="ow">or</span> <span class="n">y</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="n">step</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="n">slice_spec</span><span class="p">:</span>
+              <span class="n">step</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">slice_spec</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="ow">or</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">stop</span><span class="p">,</span> <span class="n">step</span><span class="p">):</span>
+              <span class="n">data_range</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ii</span><span class="p">)</span>
+          <span class="k">else</span><span class="p">:</span>
+            <span class="n">data_range</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+      <span class="k">elif</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data_range</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">slice</span><span class="p">)):</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Input data_range is expected to be a str, list or slice.&quot;</span><span class="p">)</span>
+      <span class="n">y</span> <span class="o">=</span> <span class="n">y</span><span class="p">[:,</span> <span class="n">data_range</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">transform</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+      <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="n">x</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="n">y</span><span class="p">}</span>
+      <span class="n">safe_exec</span><span class="p">(</span><span class="n">transform</span><span class="p">,</span> <span class="nb">locals</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+      <span class="n">x</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;x&quot;</span><span class="p">]</span>
+      <span class="n">y</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;y&quot;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">file_mode</span><span class="p">:</span>
+      <span class="c1"># Treat the entire file as a single dataset.</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">_X</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">_Y</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">_datalabel</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+      <span class="c1"># Treat each column of the file as separate dataset.</span>
+      <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">y</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_X</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_Y</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">y</span><span class="p">[:,</span> <span class="n">i</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_datalabel</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">i</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="Plot.set_transform"><a class="viewcode-back" href="../../lplot.html#lplot.main.Plot.set_transform">[docs]</a>  <span class="k">def</span> <span class="nf">set_transform</span><span class="p">(</span>
+      <span class="bp">self</span><span class="p">,</span>
+      <span class="n">transform</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+      <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Perform tranformation operation on the dataset.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    transform: str, default to None</span>
+<span class="sd">        Transformation to operate on the dataset.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_X</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Y</span><span class="p">}</span>
+    <span class="n">safe_exec</span><span class="p">(</span><span class="n">transform</span><span class="p">,</span> <span class="nb">locals</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_X</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;x&quot;</span><span class="p">]</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_Y</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;y&quot;</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="Plot.set_figure_property"><a class="viewcode-back" href="../../lplot.html#lplot.main.Plot.set_figure_property">[docs]</a>  <span class="k">def</span> <span class="nf">set_figure_property</span><span class="p">(</span>
+      <span class="bp">self</span><span class="p">,</span>
+      <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+      <span class="n">value</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
+      <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Update a single figure property.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    key: str</span>
+<span class="sd">        Name of the figure property.</span>
+<span class="sd">    value: Union[str, int, float]</span>
+<span class="sd">        Value of the figure property.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_valid_keys</span><span class="p">:</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">_figure_properties</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span></div>
+
+
+<div class="viewcode-block" id="Plot.set_figure_properties"><a class="viewcode-back" href="../../lplot.html#lplot.main.Plot.set_figure_properties">[docs]</a>  <span class="k">def</span> <span class="nf">set_figure_properties</span><span class="p">(</span>
+      <span class="bp">self</span><span class="p">,</span>
+      <span class="n">properties</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+      <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Update a bunch of figure properties.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    properties: dict</span>
+<span class="sd">        A dictionary of figure properties.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">properties</span> <span class="o">=</span> <span class="n">properties</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_valid_keys</span><span class="p">:</span>
+      <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">properties</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_figure_properties</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">key</span><span class="p">:</span> <span class="n">properties</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">key</span><span class="p">)})</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_item_specific_keys</span><span class="p">:</span>
+          <span class="bp">self</span><span class="o">.</span><span class="n">_check_item_specific_key</span><span class="p">(</span><span class="n">key</span><span class="p">)</span></div>
+
+
+  <span class="k">def</span> <span class="nf">_check_item_specific_key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Check whether the item specific key has the correct length.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    key: str</span>
+<span class="sd">        Name of the figure property.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_item_specific_keys</span><span class="p">:</span>
+      <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_figure_properties</span><span class="p">[</span><span class="n">key</span><span class="p">],</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_figure_properties</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_figure_properties</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)</span>
+      <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_figure_properties</span><span class="p">[</span><span class="n">key</span><span class="p">])</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_figure_properties</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;auto&quot;</span><span class="p">:</span>
+          <span class="bp">self</span><span class="o">.</span><span class="n">_figure_properties</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;auto&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+          <span class="bp">self</span><span class="o">.</span><span class="n">_figure_properties</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_figure_properties</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_datasets</span>
+      <span class="k">elif</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_figure_properties</span><span class="p">[</span><span class="n">key</span><span class="p">])</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_datasets</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_item_specific_keys_allow_fail</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Length of property configs for &#39;</span><span class="si">{key}</span><span class="s2">&#39; does not match length of datasets.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="n">key</span><span class="p">))</span>
+
+
+  <span class="nd">@property</span>
+  <span class="k">def</span> <span class="nf">n_datasets</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot; Number of datasets.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    n_datasets: int</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_X</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="Plot.make_plot"><a class="viewcode-back" href="../../lplot.html#lplot.main.Plot.make_plot">[docs]</a>  <span class="k">def</span> <span class="nf">make_plot</span><span class="p">(</span>
+      <span class="bp">self</span><span class="p">,</span>
+      <span class="n">mode</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="s2">&quot;plot&quot;</span><span class="p">,</span>
+      <span class="n">backend</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="s2">&quot;matplotlib&quot;</span><span class="p">,</span>
+      <span class="n">show</span><span class="p">:</span> <span class="nb">bool</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+      <span class="n">output</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+      <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create the plot</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    mode: str, default to &quot;plot&quot;</span>
+<span class="sd">        Mode of the plot.</span>
+<span class="sd">    backend: str, default to &quot;matplotlib&quot;</span>
+<span class="sd">        The plotting engine to actually draw the figure.</span>
+<span class="sd">    show: bool, default to True</span>
+<span class="sd">        Whether to show the figure.</span>
+<span class="sd">    output: str, default to None</span>
+<span class="sd">        Path to the output file for the figure to save into,</span>
+<span class="sd">        if None, the figure won&#39;t be saved.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">backend</span> <span class="ow">in</span> <span class="n">backends</span><span class="p">:</span>
+      <span class="n">backend</span> <span class="o">=</span> <span class="n">backends</span><span class="p">[</span><span class="n">backend</span><span class="p">](</span><span class="n">display</span><span class="o">=</span><span class="n">show</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">callable</span><span class="p">(</span><span class="n">backend</span><span class="p">):</span>
+      <span class="n">backend</span> <span class="o">=</span> <span class="n">backend</span><span class="p">(</span><span class="n">display</span><span class="o">=</span><span class="n">display</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_Y</span><span class="p">)</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_datasets</span><span class="p">:</span>
+      <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Length of X and Y does not match.&quot;</span><span class="p">)</span>
+    <span class="c1">#</span>
+    <span class="k">if</span> <span class="s2">&quot;color&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_figure_properties</span><span class="p">:</span>
+      <span class="n">color</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_figure_properties</span><span class="p">[</span><span class="s2">&quot;color&quot;</span><span class="p">])</span>
+    <span class="k">else</span><span class="p">:</span>
+      <span class="n">color</span> <span class="o">=</span> <span class="n">mpl_colorwheel</span>
+    <span class="k">if</span> <span class="s2">&quot;linestyle&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_figure_properties</span><span class="p">:</span>
+      <span class="n">linestyle</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_figure_properties</span><span class="p">[</span><span class="s2">&quot;linestyle&quot;</span><span class="p">])</span>
+    <span class="k">else</span><span class="p">:</span>
+      <span class="n">linestyle</span> <span class="o">=</span> <span class="n">Wheel</span><span class="p">([</span><span class="s2">&quot;-&quot;</span><span class="p">])</span>
+      <span class="c1">#  linestyle = wheel_of_linestyles</span>
+    <span class="k">if</span> <span class="s2">&quot;marker&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_figure_properties</span><span class="p">:</span>
+      <span class="n">marker</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_figure_properties</span><span class="p">[</span><span class="s2">&quot;marker&quot;</span><span class="p">])</span>
+    <span class="k">else</span><span class="p">:</span>
+      <span class="n">marker</span> <span class="o">=</span> <span class="n">wheel_of_none</span>
+    <span class="k">if</span> <span class="s2">&quot;markercolor&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_figure_properties</span><span class="p">:</span>
+      <span class="n">markercolor</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_figure_properties</span><span class="p">[</span><span class="s2">&quot;markercolor&quot;</span><span class="p">])</span>
+    <span class="k">else</span><span class="p">:</span>
+      <span class="n">markercolor</span> <span class="o">=</span> <span class="n">wheel_of_none</span>
+    <span class="k">if</span> <span class="s2">&quot;legend&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_figure_properties</span><span class="p">:</span>
+      <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_figure_properties</span><span class="p">[</span><span class="s2">&quot;legend&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;auto&quot;</span><span class="p">:</span>
+        <span class="n">legend</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_datalabel</span><span class="p">)</span>
+      <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_figure_properties</span><span class="p">[</span><span class="s2">&quot;legend&quot;</span><span class="p">])</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_datasets</span><span class="p">:</span>
+          <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Length of legend does not match the number of datasets.&quot;</span><span class="p">)</span>
+        <span class="n">legend</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_figure_properties</span><span class="p">[</span><span class="s2">&quot;legend&quot;</span><span class="p">])</span>
+      <span class="n">has_legend</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="k">else</span><span class="p">:</span>
+      <span class="n">legend</span> <span class="o">=</span> <span class="n">wheel_of_none</span>
+      <span class="n">has_legend</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="c1">#</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_datasets</span><span class="p">):</span>
+      <span class="nb">getattr</span><span class="p">(</span><span class="n">backend</span><span class="p">,</span> <span class="n">mode</span><span class="p">)(</span>
+          <span class="bp">self</span><span class="o">.</span><span class="n">_X</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Y</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+          <span class="n">linestyle</span><span class="o">=</span><span class="nb">next</span><span class="p">(</span><span class="n">linestyle</span><span class="p">),</span>
+          <span class="n">marker</span><span class="o">=</span><span class="nb">next</span><span class="p">(</span><span class="n">marker</span><span class="p">),</span>
+          <span class="n">color</span><span class="o">=</span><span class="nb">next</span><span class="p">(</span><span class="n">color</span><span class="p">),</span>
+          <span class="n">markerfacecolor</span><span class="o">=</span><span class="nb">next</span><span class="p">(</span><span class="n">markercolor</span><span class="p">),</span>
+          <span class="n">label</span><span class="o">=</span><span class="nb">next</span><span class="p">(</span><span class="n">legend</span><span class="p">),</span>
+          <span class="p">)</span>
+
+    <span class="n">properties</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_figure_properties</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_item_specific_keys</span><span class="p">:</span>
+      <span class="n">properties</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="n">properties</span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_title</span>
+    <span class="n">properties</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;fontsize&quot;</span><span class="p">,</span> <span class="n">backend</span><span class="o">.</span><span class="n">get_default_fontsize</span><span class="p">())</span>
+    <span class="n">properties</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;has_legend&quot;</span><span class="p">,</span> <span class="n">has_legend</span><span class="p">)</span>
+    <span class="n">backend</span><span class="o">.</span><span class="n">configure_plot</span><span class="p">(</span><span class="n">properties</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">output</span><span class="p">:</span>
+      <span class="n">backend</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">show</span><span class="p">:</span>
+      <span class="n">backend</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div></div>
+
+
+
+<div class="viewcode-block" id="main"><a class="viewcode-back" href="../../lplot.html#lplot.main.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+  <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">()</span>
+  <span class="c1">#</span>
+  <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--config&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Load the input argument as a configuration file.&quot;</span><span class="p">)</span>
+  <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--save-config&quot;</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s2">&quot;?&quot;</span><span class="p">,</span> <span class="n">const</span><span class="o">=</span><span class="s2">&quot;config.yml&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Save the input as a configuration file.&quot;</span><span class="p">)</span>
+  <span class="c1">#</span>
+  <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--file-mode&quot;</span><span class="p">,</span> <span class="s2">&quot;--fs&quot;</span><span class="p">,</span> <span class="s2">&quot;--fm&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Treat each file as a dataset. Default is treating each column as a dataset.&quot;</span><span class="p">)</span>
+  <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--title&quot;</span><span class="p">,</span> <span class="s2">&quot;-T&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Title of the plot.&quot;</span><span class="p">)</span>
+  <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--transform&quot;</span><span class="p">,</span> <span class="s2">&quot;-t&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Transform input dateset.&quot;</span><span class="p">)</span>
+  <span class="c1">#</span>
+  <span class="n">group</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">add_mutually_exclusive_group</span><span class="p">()</span><span class="c1">#title=&#39;plot mode&#39;)</span>
+  <span class="n">group</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--mode&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;plot&quot;</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;plot&quot;</span><span class="p">],</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Plot modes.&quot;</span><span class="p">)</span>
+  <span class="c1">#  group.add_argument(&quot;--mode&quot;, default=&quot;plot&quot;, choices=[&quot;plot&quot;, &quot;scatter&quot;, &quot;histogram&quot;, &quot;pie&quot;, &quot;bar&quot;], help=&quot;Plot modes.&quot;)</span>
+  <span class="c1">#  group.add_argument(&#39;--plot&#39;, action=&quot;store_const&quot;, const=&quot;plot&quot;, dest=&quot;mode&quot;, help=&#39;Plot lines&#39;)</span>
+  <span class="c1">#  group.add_argument(&#39;--scatter&#39;, action=&quot;store_const&quot;, const=&quot;scatter&quot;, dest=&quot;mode&quot;, help=&#39;Scatter plot&#39;)</span>
+  <span class="c1">#  group.add_argument(&#39;--histogram&#39;, action=&quot;store_const&quot;, const=&quot;histogram&quot;, dest=&quot;mode&quot;, help=&#39;Histogram plot&#39;)</span>
+  <span class="c1">#  group.add_argument(&#39;--pie&#39;, action=&quot;store_const&quot;, const=&quot;pie&quot;, dest=&quot;mode&quot;, help=&#39;Pie plot&#39;)</span>
+  <span class="c1">#  group.add_argument(&#39;--bar&#39;, action=&quot;store_const&quot;, const=&quot;bar&quot;, dest=&quot;mode&quot;, help=&#39;Bar plot&#39;)</span>
+  <span class="c1"># Plot configs</span>
+  <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--dim&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;6.4x4.8&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Plot dimension.&quot;</span><span class="p">)</span>
+  <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--linestyle&quot;</span><span class="p">,</span> <span class="s2">&quot;--ls&quot;</span><span class="p">,</span> <span class="s2">&quot;-l&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Line styles.&quot;</span><span class="p">)</span>
+  <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--marker&quot;</span><span class="p">,</span> <span class="s2">&quot;-m&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Marker styles.&quot;</span><span class="p">)</span>
+  <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--color&quot;</span><span class="p">,</span> <span class="s2">&quot;--linecolor&quot;</span><span class="p">,</span> <span class="s2">&quot;--lc&quot;</span><span class="p">,</span> <span class="s2">&quot;-c&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Line colors.&quot;</span><span class="p">)</span>
+  <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--linewidth&quot;</span><span class="p">,</span> <span class="s2">&quot;--lw&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Line colors.&quot;</span><span class="p">)</span>
+  <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--markercolor&quot;</span><span class="p">,</span> <span class="s2">&quot;--mc&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Symbol colors.&quot;</span><span class="p">)</span>
+  <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--markersize&quot;</span><span class="p">,</span> <span class="s2">&quot;--ms&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Symbol colors.&quot;</span><span class="p">)</span>
+  <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--legend&quot;</span><span class="p">,</span> <span class="s2">&quot;-g&quot;</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s2">&quot;?&quot;</span><span class="p">,</span> <span class="n">const</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Legends for datasets.&quot;</span><span class="p">)</span>
+  <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--auto-legend&quot;</span><span class="p">,</span> <span class="s2">&quot;-G&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;legend&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_const&quot;</span><span class="p">,</span> <span class="n">const</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Automatic legends for datasets.&quot;</span><span class="p">)</span>
+  <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--xmin&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Lower boundary of x value in the plot.&quot;</span><span class="p">)</span>
+  <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--xmax&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Higher boundary of x value in the plot.&quot;</span><span class="p">)</span>
+  <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--ymin&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Lower boundary of y value in the plot.&quot;</span><span class="p">)</span>
+  <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--ymax&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Higher boundary of y value in the plot.&quot;</span><span class="p">)</span>
+  <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--fontsize&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Fontsize.&quot;</span><span class="p">)</span>
+  <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--xticks&quot;</span><span class="p">,</span> <span class="s2">&quot;--xt&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Tick points for x axis.&quot;</span><span class="p">)</span>
+  <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--xticklabels&quot;</span><span class="p">,</span> <span class="s2">&quot;--xtl&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Tick labels for x axis.&quot;</span><span class="p">)</span>
+  <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--yticks&quot;</span><span class="p">,</span> <span class="s2">&quot;--yt&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Tick points for y axis.&quot;</span><span class="p">)</span>
+  <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--yticklabels&quot;</span><span class="p">,</span> <span class="s2">&quot;--ytl&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Tick labels for y axis.&quot;</span><span class="p">)</span>
+  <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--xlabel&quot;</span><span class="p">,</span> <span class="s2">&quot;--xl&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Label for x axis.&quot;</span><span class="p">)</span>
+  <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--ylabel&quot;</span><span class="p">,</span> <span class="s2">&quot;--yl&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Label for y axis.&quot;</span><span class="p">)</span>
+  <span class="c1">#</span>
+  <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--show&quot;</span><span class="p">,</span> <span class="s2">&quot;-p&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Show plot.&quot;</span><span class="p">)</span>
+  <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--output&quot;</span><span class="p">,</span> <span class="s2">&quot;--savefig&quot;</span><span class="p">,</span> <span class="s2">&quot;-o&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Save plot to file.&quot;</span><span class="p">)</span>
+  <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s2">&quot;*&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Data files. With the format &lt;path to file&gt;:&lt;columns&gt;:&lt;transformation&gt;, &quot;</span> \
+      <span class="s2">&quot;one can select columns of the data files and apply transformation immediately&quot;</span><span class="p">)</span>
+
+  <span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">argcomplete</span>
+    <span class="n">argcomplete</span><span class="o">.</span><span class="n">autocomplete</span><span class="p">(</span><span class="n">parser</span><span class="p">)</span>
+  <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="k">pass</span>
+
+  <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+  <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">config</span><span class="p">:</span>
+    <span class="n">StoreConfigAction</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;config&quot;</span><span class="p">)(</span><span class="n">parser</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+  <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">save_config</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">tmp_config</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">args</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="p">((</span><span class="n">k</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;config&quot;</span><span class="p">,</span> <span class="s2">&quot;save_config&quot;</span><span class="p">])</span> <span class="ow">and</span> <span class="p">(</span><span class="n">v</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">))}</span>
+    <span class="n">yaml</span><span class="o">.</span><span class="n">safe_dump</span><span class="p">(</span><span class="n">tmp_config</span><span class="p">,</span> <span class="nb">open</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">save_config</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">))</span>
+
+  <span class="n">plot</span> <span class="o">=</span> <span class="n">Plot</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">title</span><span class="p">)</span>
+
+  <span class="k">for</span> <span class="n">file_range_transform</span> <span class="ow">in</span> <span class="n">args</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
+    <span class="n">file_range_transform</span> <span class="o">=</span> <span class="n">file_range_transform</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">)</span>
+    <span class="n">file</span> <span class="o">=</span> <span class="n">file_range_transform</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">data_range</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">transform</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">file_range_transform</span><span class="p">:</span>
+      <span class="n">data_range</span> <span class="o">=</span> <span class="n">file_range_transform</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="ow">or</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">file_range_transform</span><span class="p">:</span>
+      <span class="n">transform</span> <span class="o">=</span> <span class="n">file_range_transform</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">file</span><span class="p">):</span>
+      <span class="n">plot</span><span class="o">.</span><span class="n">add_data</span><span class="p">(</span>
+          <span class="n">data</span><span class="o">=</span><span class="n">f</span><span class="p">,</span>
+          <span class="n">data_range</span><span class="o">=</span><span class="n">data_range</span><span class="p">,</span>
+          <span class="n">transform</span><span class="o">=</span><span class="n">transform</span><span class="p">,</span>
+          <span class="n">file_mode</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">file_mode</span><span class="p">,</span>
+          <span class="p">)</span>
+  <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">transform</span><span class="p">:</span>
+    <span class="n">plot</span><span class="o">.</span><span class="n">set_transform</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">transform</span><span class="p">)</span>
+  <span class="c1">#</span>
+  <span class="n">figure_properties</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span><span class="nb">getattr</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">plot</span><span class="o">.</span><span class="n">_valid_keys</span> <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">}</span>
+  <span class="n">plot</span><span class="o">.</span><span class="n">set_figure_properties</span><span class="p">(</span><span class="n">figure_properties</span><span class="p">)</span>
+  <span class="c1">#</span>
+  <span class="n">plot</span><span class="o">.</span><span class="n">make_plot</span><span class="p">(</span>
+      <span class="n">mode</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">mode</span><span class="p">,</span>
+      <span class="n">show</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">show</span><span class="p">,</span>
+      <span class="n">output</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">output</span><span class="p">,</span>
+      <span class="p">)</span></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+  <span class="n">main</span><span class="p">()</span>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Lyuwen Fu.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Usage &mdash; LPlot 0+untagged.1.gbe82453 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/custom_style.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/clipboard.min.js"></script>
+        <script src="_static/copybutton.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="lplot package" href="lplot.html" />
+    <link rel="prev" title="Welcome to LPlot’s documentation!" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> LPlot
+          </a>
+              <div class="version">
+                0+untagged.1.gbe82453
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Usage</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#tranform">Tranform</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#example">Example</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="lplot.html">lplot package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">LPlot</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Usage</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/lyuwen/lplot/blob/usage.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="usage">
+<h1>Usage<a class="headerlink" href="#usage" title="Permalink to this heading"></a></h1>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>usage: lplot <span class="o">[</span>-h<span class="o">]</span> <span class="o">[</span>--file-mode<span class="o">]</span> <span class="o">[</span>--title TITLE<span class="o">]</span> <span class="o">[</span>--transform TRANSFORM<span class="o">]</span>
+                                                 <span class="o">[</span>--mode <span class="o">{</span>plot<span class="o">}]</span> <span class="o">[</span>--dim DIM<span class="o">]</span> <span class="o">[</span>--linestyle LINESTYLE<span class="o">]</span>
+                                                 <span class="o">[</span>--marker MARKER<span class="o">]</span> <span class="o">[</span>--color COLOR<span class="o">]</span> <span class="o">[</span>--linewidth LINEWIDTH<span class="o">]</span>
+                                                 <span class="o">[</span>--markercolor MARKERCOLOR<span class="o">]</span> <span class="o">[</span>--markersize MARKERSIZE<span class="o">]</span>
+                                                 <span class="o">[</span>--legend <span class="o">[</span>LEGEND<span class="o">]]</span> <span class="o">[</span>--auto-legend<span class="o">]</span> <span class="o">[</span>--xmin XMIN<span class="o">]</span> <span class="o">[</span>--xmax XMAX<span class="o">]</span>
+                                                 <span class="o">[</span>--ymin YMIN<span class="o">]</span> <span class="o">[</span>--ymax YMAX<span class="o">]</span> <span class="o">[</span>--fontsize FONTSIZE<span class="o">]</span>
+                                                 <span class="o">[</span>--xticks XTICKS<span class="o">]</span> <span class="o">[</span>--xticklabels XTICKLABELS<span class="o">]</span> <span class="o">[</span>--yticks YTICKS<span class="o">]</span>
+                                                 <span class="o">[</span>--yticklabels YTICKLABELS<span class="o">]</span> <span class="o">[</span>--xlabel XLABEL<span class="o">]</span> <span class="o">[</span>--ylabel YLABEL<span class="o">]</span>
+                                                 <span class="o">[</span>--show<span class="o">]</span> <span class="o">[</span>--output OUTPUT<span class="o">]</span>
+                                                 <span class="o">[</span>data ...<span class="o">]</span>
+
+positional arguments:
+        data                  Data files. With the format &lt;path to
+                                                                                                file&gt;:&lt;columns&gt;:&lt;transformation&gt;, one can <span class="k">select</span>
+                                                                                                columns of the data files and apply transformation
+                                                                                                immediately
+
+optional arguments:
+        -h, --help            show this <span class="nb">help</span> message and <span class="nb">exit</span>
+        --file-mode, --fs, --fm
+                                                                                                Treat each file as a dataset. Default is treating each
+                                                                                                column as a dataset.
+        --title TITLE, -T TITLE
+                                                                                                Title of the plot.
+        --transform TRANSFORM, -t TRANSFORM
+                                                                                                Transform input dateset.
+        --mode <span class="o">{</span>plot<span class="o">}</span>         Plot modes.
+        --dim DIM             Plot dimension.
+        --linestyle LINESTYLE, --ls LINESTYLE, -l LINESTYLE
+                                                                                                Line styles.
+        --marker MARKER, -m MARKER
+                                                                                                Marker styles.
+        --color COLOR, --linecolor COLOR, --lc COLOR, -c COLOR
+                                                                                                Line colors.
+        --linewidth LINEWIDTH, --lw LINEWIDTH
+                                                                                                Line colors.
+        --markercolor MARKERCOLOR, --mc MARKERCOLOR
+                                                                                                Symbol colors.
+        --markersize MARKERSIZE, --ms MARKERSIZE
+                                                                                                Symbol colors.
+        --legend <span class="o">[</span>LEGEND<span class="o">]</span>, -g <span class="o">[</span>LEGEND<span class="o">]</span>
+                                                                                                Legends <span class="k">for</span> datasets.
+        --auto-legend, -G     Automatic legends <span class="k">for</span> datasets.
+        --xmin XMIN           Lower boundary of x value <span class="k">in</span> the plot.
+        --xmax XMAX           Higher boundary of x value <span class="k">in</span> the plot.
+        --ymin YMIN           Lower boundary of y value <span class="k">in</span> the plot.
+        --ymax YMAX           Higher boundary of y value <span class="k">in</span> the plot.
+        --fontsize FONTSIZE   Fontsize.
+        --xticks XTICKS, --xt XTICKS
+                                                                                                Tick points <span class="k">for</span> x axis.
+        --xticklabels XTICKLABELS, --xtl XTICKLABELS
+                                                                                                Tick labels <span class="k">for</span> x axis.
+        --yticks YTICKS, --yt YTICKS
+                                                                                                Tick points <span class="k">for</span> y axis.
+        --yticklabels YTICKLABELS, --ytl YTICKLABELS
+                                                                                                Tick labels <span class="k">for</span> y axis.
+        --xlabel XLABEL, --xl XLABEL
+                                                                                                Label <span class="k">for</span> x axis.
+        --ylabel YLABEL, --yl YLABEL
+                                                                                                Label <span class="k">for</span> y axis.
+        --show, -p            Show plot.
+        --output OUTPUT, --savefig OUTPUT, -o OUTPUT
+                                                                                                Save plot to file.
+</pre></div>
+</div>
+<section id="tranform">
+<h2>Tranform<a class="headerlink" href="#tranform" title="Permalink to this heading"></a></h2>
+<p>The tranformation of dataset can be applied as the dataset is being passed in or after all dataset have been loaded.
+The operation allows a list of basic mathematical operations and physical constants only on the dataset, for security reasons.
+The list of allowed operations include:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">sum</span><span class="p">,</span> <span class="n">sin</span><span class="p">,</span> <span class="n">cos</span><span class="p">,</span> <span class="n">tan</span><span class="p">,</span> <span class="n">arcsin</span><span class="p">,</span> <span class="n">arccos</span><span class="p">,</span> <span class="n">arctan</span><span class="p">,</span> <span class="n">log</span><span class="p">,</span> <span class="n">exp</span><span class="p">,</span> <span class="nb">abs</span><span class="p">,</span>
+<span class="nb">max</span><span class="p">,</span> <span class="nb">min</span><span class="p">,</span> <span class="n">argmin</span><span class="p">,</span> <span class="n">argmax</span><span class="p">,</span> <span class="n">dot</span><span class="p">,</span> <span class="n">pi</span><span class="p">,</span> <span class="n">gcd</span><span class="p">,</span> <span class="n">factorial</span>
+</pre></div>
+</div>
+<p>Some unit conversions has been built in too:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">energy</span><span class="p">,</span> <span class="n">mass</span><span class="p">,</span> <span class="n">pressure</span><span class="p">,</span> <span class="n">length</span>
+</pre></div>
+</div>
+<p>As well as a selection of physical constants in various units:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">hbar</span><span class="p">,</span> <span class="n">kB</span><span class="p">,</span> <span class="n">AMU</span><span class="p">,</span> <span class="n">THz</span><span class="p">,</span> <span class="n">eV</span><span class="p">,</span> <span class="n">Angstrom</span>
+</pre></div>
+</div>
+<p>The operation string is in the form a simple Python statement, with only the dataset variables <code class="docutils literal notranslate"><span class="pre">x</span></code> and <code class="docutils literal notranslate"><span class="pre">y</span></code> accessible along with basic
+arithmetic operations and the above functions. Anything else won’t be allowed.</p>
+</section>
+<section id="example">
+<h2>Example<a class="headerlink" href="#example" title="Permalink to this heading"></a></h2>
+<p>For example, the following command takes in the <code class="docutils literal notranslate"><span class="pre">dataset.txt</span></code> file, use the second to fourth columns in <code class="docutils literal notranslate"><span class="pre">y</span></code> from the file (index for <code class="docutils literal notranslate"><span class="pre">y</span></code> starts from 0),
+treat the data in the file as a single dateset, increment the values in <code class="docutils literal notranslate"><span class="pre">x</span></code> by 1,
+then apply the transformation <span class="math notranslate nohighlight">\(y[0]=sin(x[0]^2)\)</span> to the <code class="docutils literal notranslate"><span class="pre">y</span></code> of the first dataset (i.e. in the first dataset,``y`` is replaced with the <code class="docutils literal notranslate"><span class="pre">sin</span></code> of <code class="docutils literal notranslate"><span class="pre">x</span></code> squared).
+Additionally, the label for <code class="docutils literal notranslate"><span class="pre">x</span></code>-axis will be “X” and that for <code class="docutils literal notranslate"><span class="pre">y</span></code> will be <span class="math notranslate nohighlight">\(x^2\)</span>. Finally the plot will be displayed in a GUI and saved into <code class="docutils literal notranslate"><span class="pre">figure.pdf</span></code> file
+at the same time.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>lplot --fs <span class="s2">&quot;dataset.txt:1..3:x=x+1&quot;</span> --title <span class="nb">test</span> <span class="se">\</span>
+    --transform <span class="s2">&quot;y[0]=sin(x[0]**2)&quot;</span> <span class="se">\</span>
+    --xl <span class="s2">&quot;X&quot;</span> --yl <span class="s2">&quot;\$\\x^2\$&quot;</span> <span class="se">\</span>
+    --show -o figure.pdf
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Welcome to LPlot’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="lplot.html" class="btn btn-neutral float-right" title="lplot package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Lyuwen Fu.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
