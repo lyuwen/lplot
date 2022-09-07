@@ -4,3 +4,41 @@ requires = [
   "versioneer",
 ]
 build-backend = "setuptools.build_meta"
+
+[project]
+name = "lplot"
+description = "A generic command line plotting tool."
+readme = "README.rst"
+requires-python = ">=3.7"
+keywords = ["plot", "CLI"]
+license = {text = "MIT License"}
+classifiers = [
+    "Programming Language :: Python :: 3",
+]
+dependencies = [
+  "numpy",
+  "matplotlib",
+  "pyyaml",
+]
+dynamic = ["version"]
+
+[tool.setuptools.dynamic]
+version = {attr = "lplot.__version__"}
+
+[project.scripts]
+lplot = "lplot.main:main"
+
+[tool.setuptools]
+packages = ["lplot"]
+py-modules = []
+
+[tool.versioneer]
+VCS = "git"
+style = "pep440"
+versionfile_source = "lplot/_version.py"
+versionfile_build = "lplot/_version.py"
+tag_prefix = "v"
+parentdir_prefix = "lplot-"
+
+[tool.cibuildwheel]
+skip = "cp36-*"
