@@ -34,7 +34,7 @@ jobs:
         python setup.py develop
     - name: Build documentation with sphinx
       run: |
-        sphinx-build -M html "." "_build"
+        cd doc && sphinx-build -M html "." "_build"
     - name: Deploy to gh-pages
       uses: peaceiris/actions-gh-pages@v3
       if: github.ref == 'refs/heads/main'
