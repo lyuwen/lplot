@@ -212,12 +212,13 @@ class Plot:
     x = data[:, 0]
     y = data[:, 1:]
     if data_range is not None:
+      delimiter = ".."
       if isinstance(data_range, str):
         data_range_str = data_range
         data_range = []
         for i in data_range_str.split(","):
-          if i.find(":") > -1:
-            slice_spec = i.split(":")
+          if i.find(delimiter) > -1:
+            slice_spec = i.split(delimiter)
             start = int(slice_spec.pop(0).strip() or 0)
             stop = int(slice_spec.pop(0).strip() or y.shape[1])
             step = 1
@@ -457,7 +458,8 @@ def main():
   #
   parser.add_argument("--show", "-p", action="store_true", help="Show plot.")
   parser.add_argument("--output", "--savefig", "-o", help="Save plot to file.")
-  parser.add_argument("data", nargs="*", help="Data files.")
+  parser.add_argument("data", nargs="*", help="Data files. With the format <path to file>:<columns>:<transformation>, " \
+      "one can select columns of the data files and apply transformation immediately")
 
   try:
     import argcomplete
