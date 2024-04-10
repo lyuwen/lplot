@@ -39,9 +39,13 @@ class Wheel:
     self._items = items
 
 
+  def __len__(self):
+    return len(self.items)
+
+
   @property
   def n_items(self):
-    return len(self.items)
+    return len(self)
 
 
   @property
@@ -72,13 +76,19 @@ wheel_of_linestyles = Wheel(['-', '--', '-.', ':'])
 wheel_of_markers = Wheel(['o', 'v', '^', '<', '>', '8', 's', 'p', '*', 'h', 'H', 'D', 'd', 'P', 'X'])
 wheel_of_none = Wheel([None])
 
+colorwheel = Wheel(["#3A81A2", "#B3E467", "#D3453A", "#62D7E1", "#5252B9", "#E9B7E3", "#B427B7", "#50E316", "#346A34", "#11E38C", "#FF0087", "#E7AD79"])
+
 
 if __name__ == "__main__":
-  cw = mpl_colorwheel
-
-  counter = 0
-  for color in cw:
-    if counter > 15:
-      break
-    print(counter, color, cw._index)
-    counter += 1
+  import matplotlib.pyplot as plt
+  for i, c in enumerate(colorwheel.items):
+    plt.bar(i, 12, width=1, color=c)
+  plt.show()
+  #  cw = mpl_colorwheel
+  #
+  #  counter = 0
+  #  for color in cw:
+  #    if counter > 15:
+  #      break
+  #    print(counter, color, cw._index)
+  #    counter += 1
