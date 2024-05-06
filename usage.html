@@ -1,25 +1,27 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="./">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Usage &mdash; LPlot 0+untagged.1.ge406d22 documentation</title>
-      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="_static/copybutton.css" type="text/css" />
-      <link rel="stylesheet" href="_static/css/custom_style.css" type="text/css" />
+  <title>Usage &mdash; LPlot 0+untagged.1.g6a61cf6 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="_static/css/custom_style.css?v=23517495" />
+
+  
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/jquery.js"></script>
-        <script src="_static/underscore.js"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script src="_static/doctools.js"></script>
-        <script src="_static/clipboard.min.js"></script>
-        <script src="_static/copybutton.js"></script>
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=f2e6cab5"></script>
+        <script src="_static/doctools.js?v=9a2dae69"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="_static/copybutton.js?v=f281be69"></script>
         <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -33,14 +35,18 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="index.html" class="icon icon-home"> LPlot
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            LPlot
           </a>
               <div class="version">
-                0+untagged.1.ge406d22
+                0+untagged.1.g6a61cf6
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -69,8 +75,8 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>Usage</li>
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Usage</li>
       <li class="wy-breadcrumbs-aside">
               <a href="https://github.com/lyuwen/lplot/blob/usage.rst" class="fa fa-github"> Edit on GitHub</a>
       </li>
@@ -81,74 +87,74 @@
            <div itemprop="articleBody">
              
   <section id="usage">
-<h1>Usage<a class="headerlink" href="#usage" title="Permalink to this heading"></a></h1>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>usage: lplot <span class="o">[</span>-h<span class="o">]</span> <span class="o">[</span>--file-mode<span class="o">]</span> <span class="o">[</span>--title TITLE<span class="o">]</span> <span class="o">[</span>--transform TRANSFORM<span class="o">]</span>
-                                                 <span class="o">[</span>--mode <span class="o">{</span>plot<span class="o">}]</span> <span class="o">[</span>--dim DIM<span class="o">]</span> <span class="o">[</span>--linestyle LINESTYLE<span class="o">]</span>
-                                                 <span class="o">[</span>--marker MARKER<span class="o">]</span> <span class="o">[</span>--color COLOR<span class="o">]</span> <span class="o">[</span>--linewidth LINEWIDTH<span class="o">]</span>
-                                                 <span class="o">[</span>--markercolor MARKERCOLOR<span class="o">]</span> <span class="o">[</span>--markersize MARKERSIZE<span class="o">]</span>
-                                                 <span class="o">[</span>--legend <span class="o">[</span>LEGEND<span class="o">]]</span> <span class="o">[</span>--auto-legend<span class="o">]</span> <span class="o">[</span>--xmin XMIN<span class="o">]</span> <span class="o">[</span>--xmax XMAX<span class="o">]</span>
-                                                 <span class="o">[</span>--ymin YMIN<span class="o">]</span> <span class="o">[</span>--ymax YMAX<span class="o">]</span> <span class="o">[</span>--fontsize FONTSIZE<span class="o">]</span>
-                                                 <span class="o">[</span>--xticks XTICKS<span class="o">]</span> <span class="o">[</span>--xticklabels XTICKLABELS<span class="o">]</span> <span class="o">[</span>--yticks YTICKS<span class="o">]</span>
-                                                 <span class="o">[</span>--yticklabels YTICKLABELS<span class="o">]</span> <span class="o">[</span>--xlabel XLABEL<span class="o">]</span> <span class="o">[</span>--ylabel YLABEL<span class="o">]</span>
-                                                 <span class="o">[</span>--show<span class="o">]</span> <span class="o">[</span>--output OUTPUT<span class="o">]</span>
-                                                 <span class="o">[</span>data ...<span class="o">]</span>
+<h1>Usage<a class="headerlink" href="#usage" title="Link to this heading"></a></h1>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>usage:<span class="w"> </span>lplot<span class="w"> </span><span class="o">[</span>-h<span class="o">]</span><span class="w"> </span><span class="o">[</span>--file-mode<span class="o">]</span><span class="w"> </span><span class="o">[</span>--title<span class="w"> </span>TITLE<span class="o">]</span><span class="w"> </span><span class="o">[</span>--transform<span class="w"> </span>TRANSFORM<span class="o">]</span>
+<span class="w">                                                 </span><span class="o">[</span>--mode<span class="w"> </span><span class="o">{</span>plot<span class="o">}]</span><span class="w"> </span><span class="o">[</span>--dim<span class="w"> </span>DIM<span class="o">]</span><span class="w"> </span><span class="o">[</span>--linestyle<span class="w"> </span>LINESTYLE<span class="o">]</span>
+<span class="w">                                                 </span><span class="o">[</span>--marker<span class="w"> </span>MARKER<span class="o">]</span><span class="w"> </span><span class="o">[</span>--color<span class="w"> </span>COLOR<span class="o">]</span><span class="w"> </span><span class="o">[</span>--linewidth<span class="w"> </span>LINEWIDTH<span class="o">]</span>
+<span class="w">                                                 </span><span class="o">[</span>--markercolor<span class="w"> </span>MARKERCOLOR<span class="o">]</span><span class="w"> </span><span class="o">[</span>--markersize<span class="w"> </span>MARKERSIZE<span class="o">]</span>
+<span class="w">                                                 </span><span class="o">[</span>--legend<span class="w"> </span><span class="o">[</span>LEGEND<span class="o">]]</span><span class="w"> </span><span class="o">[</span>--auto-legend<span class="o">]</span><span class="w"> </span><span class="o">[</span>--xmin<span class="w"> </span>XMIN<span class="o">]</span><span class="w"> </span><span class="o">[</span>--xmax<span class="w"> </span>XMAX<span class="o">]</span>
+<span class="w">                                                 </span><span class="o">[</span>--ymin<span class="w"> </span>YMIN<span class="o">]</span><span class="w"> </span><span class="o">[</span>--ymax<span class="w"> </span>YMAX<span class="o">]</span><span class="w"> </span><span class="o">[</span>--fontsize<span class="w"> </span>FONTSIZE<span class="o">]</span>
+<span class="w">                                                 </span><span class="o">[</span>--xticks<span class="w"> </span>XTICKS<span class="o">]</span><span class="w"> </span><span class="o">[</span>--xticklabels<span class="w"> </span>XTICKLABELS<span class="o">]</span><span class="w"> </span><span class="o">[</span>--yticks<span class="w"> </span>YTICKS<span class="o">]</span>
+<span class="w">                                                 </span><span class="o">[</span>--yticklabels<span class="w"> </span>YTICKLABELS<span class="o">]</span><span class="w"> </span><span class="o">[</span>--xlabel<span class="w"> </span>XLABEL<span class="o">]</span><span class="w"> </span><span class="o">[</span>--ylabel<span class="w"> </span>YLABEL<span class="o">]</span>
+<span class="w">                                                 </span><span class="o">[</span>--show<span class="o">]</span><span class="w"> </span><span class="o">[</span>--output<span class="w"> </span>OUTPUT<span class="o">]</span>
+<span class="w">                                                 </span><span class="o">[</span>data<span class="w"> </span>...<span class="o">]</span>
 
-positional arguments:
-        data                  Data files. With the format &lt;path to
-                                                                                                file&gt;:&lt;columns&gt;:&lt;transformation&gt;, one can <span class="k">select</span>
-                                                                                                columns of the data files and apply transformation
-                                                                                                immediately
+positional<span class="w"> </span>arguments:
+<span class="w">        </span>data<span class="w">                  </span>Data<span class="w"> </span>files.<span class="w"> </span>With<span class="w"> </span>the<span class="w"> </span>format<span class="w"> </span>&lt;path<span class="w"> </span>to
+<span class="w">                                                                                                </span>file&gt;:&lt;columns&gt;:&lt;transformation&gt;,<span class="w"> </span>one<span class="w"> </span>can<span class="w"> </span><span class="k">select</span>
+<span class="w">                                                                                                </span>columns<span class="w"> </span>of<span class="w"> </span>the<span class="w"> </span>data<span class="w"> </span>files<span class="w"> </span>and<span class="w"> </span>apply<span class="w"> </span>transformation
+<span class="w">                                                                                                </span>immediately
 
-optional arguments:
-        -h, --help            show this <span class="nb">help</span> message and <span class="nb">exit</span>
-        --file-mode, --fs, --fm
-                                                                                                Treat each file as a dataset. Default is treating each
-                                                                                                column as a dataset.
-        --title TITLE, -T TITLE
-                                                                                                Title of the plot.
-        --transform TRANSFORM, -t TRANSFORM
-                                                                                                Transform input dateset.
-        --mode <span class="o">{</span>plot<span class="o">}</span>         Plot modes.
-        --dim DIM             Plot dimension.
-        --linestyle LINESTYLE, --ls LINESTYLE, -l LINESTYLE
-                                                                                                Line styles.
-        --marker MARKER, -m MARKER
-                                                                                                Marker styles.
-        --color COLOR, --linecolor COLOR, --lc COLOR, -c COLOR
-                                                                                                Line colors.
-        --linewidth LINEWIDTH, --lw LINEWIDTH
-                                                                                                Line colors.
-        --markercolor MARKERCOLOR, --mc MARKERCOLOR
-                                                                                                Symbol colors.
-        --markersize MARKERSIZE, --ms MARKERSIZE
-                                                                                                Symbol colors.
-        --legend <span class="o">[</span>LEGEND<span class="o">]</span>, -g <span class="o">[</span>LEGEND<span class="o">]</span>
-                                                                                                Legends <span class="k">for</span> datasets.
-        --auto-legend, -G     Automatic legends <span class="k">for</span> datasets.
-        --xmin XMIN           Lower boundary of x value <span class="k">in</span> the plot.
-        --xmax XMAX           Higher boundary of x value <span class="k">in</span> the plot.
-        --ymin YMIN           Lower boundary of y value <span class="k">in</span> the plot.
-        --ymax YMAX           Higher boundary of y value <span class="k">in</span> the plot.
-        --fontsize FONTSIZE   Fontsize.
-        --xticks XTICKS, --xt XTICKS
-                                                                                                Tick points <span class="k">for</span> x axis.
-        --xticklabels XTICKLABELS, --xtl XTICKLABELS
-                                                                                                Tick labels <span class="k">for</span> x axis.
-        --yticks YTICKS, --yt YTICKS
-                                                                                                Tick points <span class="k">for</span> y axis.
-        --yticklabels YTICKLABELS, --ytl YTICKLABELS
-                                                                                                Tick labels <span class="k">for</span> y axis.
-        --xlabel XLABEL, --xl XLABEL
-                                                                                                Label <span class="k">for</span> x axis.
-        --ylabel YLABEL, --yl YLABEL
-                                                                                                Label <span class="k">for</span> y axis.
-        --show, -p            Show plot.
-        --output OUTPUT, --savefig OUTPUT, -o OUTPUT
-                                                                                                Save plot to file.
+optional<span class="w"> </span>arguments:
+<span class="w">        </span>-h,<span class="w"> </span>--help<span class="w">            </span>show<span class="w"> </span>this<span class="w"> </span><span class="nb">help</span><span class="w"> </span>message<span class="w"> </span>and<span class="w"> </span><span class="nb">exit</span>
+<span class="w">        </span>--file-mode,<span class="w"> </span>--fs,<span class="w"> </span>--fm
+<span class="w">                                                                                                </span>Treat<span class="w"> </span>each<span class="w"> </span>file<span class="w"> </span>as<span class="w"> </span>a<span class="w"> </span>dataset.<span class="w"> </span>Default<span class="w"> </span>is<span class="w"> </span>treating<span class="w"> </span>each
+<span class="w">                                                                                                </span>column<span class="w"> </span>as<span class="w"> </span>a<span class="w"> </span>dataset.
+<span class="w">        </span>--title<span class="w"> </span>TITLE,<span class="w"> </span>-T<span class="w"> </span>TITLE
+<span class="w">                                                                                                </span>Title<span class="w"> </span>of<span class="w"> </span>the<span class="w"> </span>plot.
+<span class="w">        </span>--transform<span class="w"> </span>TRANSFORM,<span class="w"> </span>-t<span class="w"> </span>TRANSFORM
+<span class="w">                                                                                                </span>Transform<span class="w"> </span>input<span class="w"> </span>dateset.
+<span class="w">        </span>--mode<span class="w"> </span><span class="o">{</span>plot<span class="o">}</span><span class="w">         </span>Plot<span class="w"> </span>modes.
+<span class="w">        </span>--dim<span class="w"> </span>DIM<span class="w">             </span>Plot<span class="w"> </span>dimension.
+<span class="w">        </span>--linestyle<span class="w"> </span>LINESTYLE,<span class="w"> </span>--ls<span class="w"> </span>LINESTYLE,<span class="w"> </span>-l<span class="w"> </span>LINESTYLE
+<span class="w">                                                                                                </span>Line<span class="w"> </span>styles.
+<span class="w">        </span>--marker<span class="w"> </span>MARKER,<span class="w"> </span>-m<span class="w"> </span>MARKER
+<span class="w">                                                                                                </span>Marker<span class="w"> </span>styles.
+<span class="w">        </span>--color<span class="w"> </span>COLOR,<span class="w"> </span>--linecolor<span class="w"> </span>COLOR,<span class="w"> </span>--lc<span class="w"> </span>COLOR,<span class="w"> </span>-c<span class="w"> </span>COLOR
+<span class="w">                                                                                                </span>Line<span class="w"> </span>colors.
+<span class="w">        </span>--linewidth<span class="w"> </span>LINEWIDTH,<span class="w"> </span>--lw<span class="w"> </span>LINEWIDTH
+<span class="w">                                                                                                </span>Line<span class="w"> </span>colors.
+<span class="w">        </span>--markercolor<span class="w"> </span>MARKERCOLOR,<span class="w"> </span>--mc<span class="w"> </span>MARKERCOLOR
+<span class="w">                                                                                                </span>Symbol<span class="w"> </span>colors.
+<span class="w">        </span>--markersize<span class="w"> </span>MARKERSIZE,<span class="w"> </span>--ms<span class="w"> </span>MARKERSIZE
+<span class="w">                                                                                                </span>Symbol<span class="w"> </span>colors.
+<span class="w">        </span>--legend<span class="w"> </span><span class="o">[</span>LEGEND<span class="o">]</span>,<span class="w"> </span>-g<span class="w"> </span><span class="o">[</span>LEGEND<span class="o">]</span>
+<span class="w">                                                                                                </span>Legends<span class="w"> </span><span class="k">for</span><span class="w"> </span>datasets.
+<span class="w">        </span>--auto-legend,<span class="w"> </span>-G<span class="w">     </span>Automatic<span class="w"> </span>legends<span class="w"> </span><span class="k">for</span><span class="w"> </span>datasets.
+<span class="w">        </span>--xmin<span class="w"> </span>XMIN<span class="w">           </span>Lower<span class="w"> </span>boundary<span class="w"> </span>of<span class="w"> </span>x<span class="w"> </span>value<span class="w"> </span><span class="k">in</span><span class="w"> </span>the<span class="w"> </span>plot.
+<span class="w">        </span>--xmax<span class="w"> </span>XMAX<span class="w">           </span>Higher<span class="w"> </span>boundary<span class="w"> </span>of<span class="w"> </span>x<span class="w"> </span>value<span class="w"> </span><span class="k">in</span><span class="w"> </span>the<span class="w"> </span>plot.
+<span class="w">        </span>--ymin<span class="w"> </span>YMIN<span class="w">           </span>Lower<span class="w"> </span>boundary<span class="w"> </span>of<span class="w"> </span>y<span class="w"> </span>value<span class="w"> </span><span class="k">in</span><span class="w"> </span>the<span class="w"> </span>plot.
+<span class="w">        </span>--ymax<span class="w"> </span>YMAX<span class="w">           </span>Higher<span class="w"> </span>boundary<span class="w"> </span>of<span class="w"> </span>y<span class="w"> </span>value<span class="w"> </span><span class="k">in</span><span class="w"> </span>the<span class="w"> </span>plot.
+<span class="w">        </span>--fontsize<span class="w"> </span>FONTSIZE<span class="w">   </span>Fontsize.
+<span class="w">        </span>--xticks<span class="w"> </span>XTICKS,<span class="w"> </span>--xt<span class="w"> </span>XTICKS
+<span class="w">                                                                                                </span>Tick<span class="w"> </span>points<span class="w"> </span><span class="k">for</span><span class="w"> </span>x<span class="w"> </span>axis.
+<span class="w">        </span>--xticklabels<span class="w"> </span>XTICKLABELS,<span class="w"> </span>--xtl<span class="w"> </span>XTICKLABELS
+<span class="w">                                                                                                </span>Tick<span class="w"> </span>labels<span class="w"> </span><span class="k">for</span><span class="w"> </span>x<span class="w"> </span>axis.
+<span class="w">        </span>--yticks<span class="w"> </span>YTICKS,<span class="w"> </span>--yt<span class="w"> </span>YTICKS
+<span class="w">                                                                                                </span>Tick<span class="w"> </span>points<span class="w"> </span><span class="k">for</span><span class="w"> </span>y<span class="w"> </span>axis.
+<span class="w">        </span>--yticklabels<span class="w"> </span>YTICKLABELS,<span class="w"> </span>--ytl<span class="w"> </span>YTICKLABELS
+<span class="w">                                                                                                </span>Tick<span class="w"> </span>labels<span class="w"> </span><span class="k">for</span><span class="w"> </span>y<span class="w"> </span>axis.
+<span class="w">        </span>--xlabel<span class="w"> </span>XLABEL,<span class="w"> </span>--xl<span class="w"> </span>XLABEL
+<span class="w">                                                                                                </span>Label<span class="w"> </span><span class="k">for</span><span class="w"> </span>x<span class="w"> </span>axis.
+<span class="w">        </span>--ylabel<span class="w"> </span>YLABEL,<span class="w"> </span>--yl<span class="w"> </span>YLABEL
+<span class="w">                                                                                                </span>Label<span class="w"> </span><span class="k">for</span><span class="w"> </span>y<span class="w"> </span>axis.
+<span class="w">        </span>--show,<span class="w"> </span>-p<span class="w">            </span>Show<span class="w"> </span>plot.
+<span class="w">        </span>--output<span class="w"> </span>OUTPUT,<span class="w"> </span>--savefig<span class="w"> </span>OUTPUT,<span class="w"> </span>-o<span class="w"> </span>OUTPUT
+<span class="w">                                                                                                </span>Save<span class="w"> </span>plot<span class="w"> </span>to<span class="w"> </span>file.
 </pre></div>
 </div>
 <section id="tranform">
-<h2>Tranform<a class="headerlink" href="#tranform" title="Permalink to this heading"></a></h2>
+<h2>Tranform<a class="headerlink" href="#tranform" title="Link to this heading"></a></h2>
 <p>The tranformation of dataset can be applied as the dataset is being passed in or after all dataset have been loaded.
 The operation allows a list of basic mathematical operations and physical constants only on the dataset, for security reasons.
 The list of allowed operations include:</p>
@@ -168,16 +174,16 @@ The list of allowed operations include:</p>
 arithmetic operations and the above functions. Anything else won’t be allowed.</p>
 </section>
 <section id="example">
-<h2>Example<a class="headerlink" href="#example" title="Permalink to this heading"></a></h2>
+<h2>Example<a class="headerlink" href="#example" title="Link to this heading"></a></h2>
 <p>For example, the following command takes in the <code class="docutils literal notranslate"><span class="pre">dataset.txt</span></code> file, use the second to fourth columns in <code class="docutils literal notranslate"><span class="pre">y</span></code> from the file (index for <code class="docutils literal notranslate"><span class="pre">y</span></code> starts from 0),
 treat the data in the file as a single dateset, increment the values in <code class="docutils literal notranslate"><span class="pre">x</span></code> by 1,
 then apply the transformation <span class="math notranslate nohighlight">\(y[0]=sin(x[0]^2)\)</span> to the <code class="docutils literal notranslate"><span class="pre">y</span></code> of the first dataset (i.e. in the first dataset,``y`` is replaced with the <code class="docutils literal notranslate"><span class="pre">sin</span></code> of <code class="docutils literal notranslate"><span class="pre">x</span></code> squared).
 Additionally, the label for <code class="docutils literal notranslate"><span class="pre">x</span></code>-axis will be “X” and that for <code class="docutils literal notranslate"><span class="pre">y</span></code> will be <span class="math notranslate nohighlight">\(x^2\)</span>. Finally the plot will be displayed in a GUI and saved into <code class="docutils literal notranslate"><span class="pre">figure.pdf</span></code> file
 at the same time.</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>lplot --fs <span class="s2">&quot;dataset.txt:1..3:x=x+1&quot;</span> --title <span class="nb">test</span> <span class="se">\</span>
-    --transform <span class="s2">&quot;y[0]=sin(x[0]**2)&quot;</span> <span class="se">\</span>
-    --xl <span class="s2">&quot;X&quot;</span> --yl <span class="s2">&quot;\$\\x^2\$&quot;</span> <span class="se">\</span>
-    --show -o figure.pdf
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>lplot<span class="w"> </span>--fs<span class="w"> </span><span class="s2">&quot;dataset.txt:1..3:x=x+1&quot;</span><span class="w"> </span>--title<span class="w"> </span><span class="nb">test</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--transform<span class="w"> </span><span class="s2">&quot;y[0]=sin(x[0]**2)&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--xl<span class="w"> </span><span class="s2">&quot;X&quot;</span><span class="w"> </span>--yl<span class="w"> </span><span class="s2">&quot;\$\\x^2\$&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--show<span class="w"> </span>-o<span class="w"> </span>figure.pdf
 </pre></div>
 </div>
 </section>

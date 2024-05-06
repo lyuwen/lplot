@@ -1,25 +1,27 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="./">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>lplot package &mdash; LPlot 0+untagged.1.ge406d22 documentation</title>
-      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="_static/copybutton.css" type="text/css" />
-      <link rel="stylesheet" href="_static/css/custom_style.css" type="text/css" />
+  <title>lplot package &mdash; LPlot 0+untagged.1.g6a61cf6 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="_static/css/custom_style.css?v=23517495" />
+
+  
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/jquery.js"></script>
-        <script src="_static/underscore.js"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script src="_static/doctools.js"></script>
-        <script src="_static/clipboard.min.js"></script>
-        <script src="_static/copybutton.js"></script>
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=f2e6cab5"></script>
+        <script src="_static/doctools.js?v=9a2dae69"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="_static/copybutton.js?v=f281be69"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -31,14 +33,18 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="index.html" class="icon icon-home"> LPlot
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            LPlot
           </a>
               <div class="version">
-                0+untagged.1.ge406d22
+                0+untagged.1.g6a61cf6
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -49,12 +55,71 @@
 <li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">lplot package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#submodules">Submodules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#module-lplot.lmath">lplot.lmath module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#module-lplot.main">lplot.main module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#module-lplot.physical_constant">lplot.physical_constant module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#module-lplot.safe_eval">lplot.safe_eval module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#module-lplot.unit_conversion">lplot.unit_conversion module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#module-lplot.wheels">lplot.wheels module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-lplot.lmath">lplot.lmath module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#lplot.lmath.factorial"><code class="docutils literal notranslate"><span class="pre">factorial()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-lplot.main">lplot.main module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#lplot.main.Backend"><code class="docutils literal notranslate"><span class="pre">Backend</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#lplot.main.Backend.display"><code class="docutils literal notranslate"><span class="pre">Backend.display</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#lplot.main.Backend.savefig"><code class="docutils literal notranslate"><span class="pre">Backend.savefig()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#lplot.main.Backend.show"><code class="docutils literal notranslate"><span class="pre">Backend.show()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#lplot.main.MPLBackend"><code class="docutils literal notranslate"><span class="pre">MPLBackend</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#lplot.main.MPLBackend.configure_plot"><code class="docutils literal notranslate"><span class="pre">MPLBackend.configure_plot()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#lplot.main.MPLBackend.display"><code class="docutils literal notranslate"><span class="pre">MPLBackend.display</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#lplot.main.MPLBackend.get_default_fontsize"><code class="docutils literal notranslate"><span class="pre">MPLBackend.get_default_fontsize()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#lplot.main.MPLBackend.savefig"><code class="docutils literal notranslate"><span class="pre">MPLBackend.savefig()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#lplot.main.MPLBackend.show"><code class="docutils literal notranslate"><span class="pre">MPLBackend.show()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#lplot.main.Plot"><code class="docutils literal notranslate"><span class="pre">Plot</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#lplot.main.Plot.add_data"><code class="docutils literal notranslate"><span class="pre">Plot.add_data()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#lplot.main.Plot.make_plot"><code class="docutils literal notranslate"><span class="pre">Plot.make_plot()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#lplot.main.Plot.n_datasets"><code class="docutils literal notranslate"><span class="pre">Plot.n_datasets</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#lplot.main.Plot.set_figure_properties"><code class="docutils literal notranslate"><span class="pre">Plot.set_figure_properties()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#lplot.main.Plot.set_figure_property"><code class="docutils literal notranslate"><span class="pre">Plot.set_figure_property()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#lplot.main.Plot.set_transform"><code class="docutils literal notranslate"><span class="pre">Plot.set_transform()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#lplot.main.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-lplot.physical_constant">lplot.physical_constant module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#lplot.physical_constant.PhysicalConstant"><code class="docutils literal notranslate"><span class="pre">PhysicalConstant</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#lplot.physical_constant.PhysicalConstant.data_parse"><code class="docutils literal notranslate"><span class="pre">PhysicalConstant.data_parse()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#lplot.physical_constant.PhysicalConstant.existing_units"><code class="docutils literal notranslate"><span class="pre">PhysicalConstant.existing_units</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-lplot.safe_eval">lplot.safe_eval module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#lplot.safe_eval.eval_slice"><code class="docutils literal notranslate"><span class="pre">eval_slice()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#lplot.safe_eval.safe_assign"><code class="docutils literal notranslate"><span class="pre">safe_assign()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#lplot.safe_eval.safe_eval"><code class="docutils literal notranslate"><span class="pre">safe_eval()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#lplot.safe_eval.safe_exec"><code class="docutils literal notranslate"><span class="pre">safe_exec()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-lplot.unit_conversion">lplot.unit_conversion module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#lplot.unit_conversion.UnitConversion"><code class="docutils literal notranslate"><span class="pre">UnitConversion</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#lplot.unit_conversion.UnitConversion.data_parse"><code class="docutils literal notranslate"><span class="pre">UnitConversion.data_parse()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#lplot.unit_conversion.UnitConversion.find_path"><code class="docutils literal notranslate"><span class="pre">UnitConversion.find_path()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-lplot.wheels">lplot.wheels module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#lplot.wheels.Wheel"><code class="docutils literal notranslate"><span class="pre">Wheel</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#lplot.wheels.Wheel.current_item"><code class="docutils literal notranslate"><span class="pre">Wheel.current_item</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#lplot.wheels.Wheel.initialize"><code class="docutils literal notranslate"><span class="pre">Wheel.initialize()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#lplot.wheels.Wheel.items"><code class="docutils literal notranslate"><span class="pre">Wheel.items</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#lplot.wheels.Wheel.n_items"><code class="docutils literal notranslate"><span class="pre">Wheel.n_items</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#lplot.wheels.Wheel.next"><code class="docutils literal notranslate"><span class="pre">Wheel.next()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#module-lplot">Module contents</a></li>
 </ul>
 </li>
@@ -73,8 +138,8 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>lplot package</li>
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">lplot package</li>
       <li class="wy-breadcrumbs-aside">
               <a href="https://github.com/lyuwen/lplot/blob/lplot.rst" class="fa fa-github"> Edit on GitHub</a>
       </li>
@@ -85,40 +150,40 @@
            <div itemprop="articleBody">
              
   <section id="lplot-package">
-<h1>lplot package<a class="headerlink" href="#lplot-package" title="Permalink to this heading"></a></h1>
+<h1>lplot package<a class="headerlink" href="#lplot-package" title="Link to this heading"></a></h1>
 <section id="submodules">
-<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading"></a></h2>
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
 </section>
 <section id="module-lplot.lmath">
-<span id="lplot-lmath-module"></span><h2>lplot.lmath module<a class="headerlink" href="#module-lplot.lmath" title="Permalink to this heading"></a></h2>
+<span id="lplot-lmath-module"></span><h2>lplot.lmath module<a class="headerlink" href="#module-lplot.lmath" title="Link to this heading"></a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="lplot.lmath.factorial">
-<span class="sig-prename descclassname"><span class="pre">lplot.lmath.</span></span><span class="sig-name descname"><span class="pre">factorial</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="_modules/lplot/lmath.html#factorial"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lplot.lmath.factorial" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">lplot.lmath.</span></span><span class="sig-name descname"><span class="pre">factorial</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="_modules/lplot/lmath.html#factorial"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lplot.lmath.factorial" title="Link to this definition"></a></dt>
 <dd><p>Compute factorial of input x -&gt; x!.</p>
 </dd></dl>
 
 </section>
 <section id="module-lplot.main">
-<span id="lplot-main-module"></span><h2>lplot.main module<a class="headerlink" href="#module-lplot.main" title="Permalink to this heading"></a></h2>
+<span id="lplot-main-module"></span><h2>lplot.main module<a class="headerlink" href="#module-lplot.main" title="Link to this heading"></a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="lplot.main.Backend">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">lplot.main.</span></span><span class="sig-name descname"><span class="pre">Backend</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">display</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dim</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lplot/main.html#Backend"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lplot.main.Backend" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">lplot.main.</span></span><span class="sig-name descname"><span class="pre">Backend</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">display</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dim</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lplot/main.html#Backend"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lplot.main.Backend" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></p>
 <p>Abstract class for the plotting backend.</p>
 <dl class="py property">
 <dt class="sig sig-object py" id="lplot.main.Backend.display">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">display</span></span><a class="headerlink" href="#lplot.main.Backend.display" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">display</span></span><a class="headerlink" href="#lplot.main.Backend.display" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="lplot.main.Backend.savefig">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">savefig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lplot/main.html#Backend.savefig"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lplot.main.Backend.savefig" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">savefig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lplot/main.html#Backend.savefig"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lplot.main.Backend.savefig" title="Link to this definition"></a></dt>
 <dd><p>Save the plot into a file.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="lplot.main.Backend.show">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">show</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lplot/main.html#Backend.show"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lplot.main.Backend.show" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">show</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lplot/main.html#Backend.show"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lplot.main.Backend.show" title="Link to this definition"></a></dt>
 <dd><p>Show the plot.</p>
 </dd></dl>
 
@@ -126,11 +191,11 @@
 
 <dl class="py class">
 <dt class="sig sig-object py" id="lplot.main.MPLBackend">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">lplot.main.</span></span><span class="sig-name descname"><span class="pre">MPLBackend</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">display</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">(6.4,</span> <span class="pre">4.8)</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lplot/main.html#MPLBackend"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lplot.main.MPLBackend" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">lplot.main.</span></span><span class="sig-name descname"><span class="pre">MPLBackend</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">display</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">(6.4,</span> <span class="pre">4.8)</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lplot/main.html#MPLBackend"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lplot.main.MPLBackend" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#lplot.main.Backend" title="lplot.main.Backend"><code class="xref py py-class docutils literal notranslate"><span class="pre">Backend</span></code></a></p>
 <p>Matplotlib plotting backend.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>display</strong> (<em>bool</em>) – Whether the image will be displayed. Different MPL backend will be chosen
 depending on this option.</p></li>
@@ -140,10 +205,10 @@ depending on this option.</p></li>
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="lplot.main.MPLBackend.configure_plot">
-<span class="sig-name descname"><span class="pre">configure_plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">configs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lplot/main.html#MPLBackend.configure_plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lplot.main.MPLBackend.configure_plot" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">configure_plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">configs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lplot/main.html#MPLBackend.configure_plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lplot.main.MPLBackend.configure_plot" title="Link to this definition"></a></dt>
 <dd><p>Configure the plot.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>configs</strong> (<em>dict</em>) – Configurations to apply to the plot.</p>
 </dd>
 </dl>
@@ -151,24 +216,24 @@ depending on this option.</p></li>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="lplot.main.MPLBackend.display">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">display</span></span><a class="headerlink" href="#lplot.main.MPLBackend.display" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">display</span></span><a class="headerlink" href="#lplot.main.MPLBackend.display" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="lplot.main.MPLBackend.get_default_fontsize">
-<span class="sig-name descname"><span class="pre">get_default_fontsize</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/lplot/main.html#MPLBackend.get_default_fontsize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lplot.main.MPLBackend.get_default_fontsize" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">get_default_fontsize</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span></span></span><a class="reference internal" href="_modules/lplot/main.html#MPLBackend.get_default_fontsize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lplot.main.MPLBackend.get_default_fontsize" title="Link to this definition"></a></dt>
 <dd><p>Get default font size from the plotting backend.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="lplot.main.MPLBackend.savefig">
-<span class="sig-name descname"><span class="pre">savefig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lplot/main.html#MPLBackend.savefig"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lplot.main.MPLBackend.savefig" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">savefig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lplot/main.html#MPLBackend.savefig"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lplot.main.MPLBackend.savefig" title="Link to this definition"></a></dt>
 <dd><p>Save the plot into a file.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="lplot.main.MPLBackend.show">
-<span class="sig-name descname"><span class="pre">show</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lplot/main.html#MPLBackend.show"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lplot.main.MPLBackend.show" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">show</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lplot/main.html#MPLBackend.show"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lplot.main.MPLBackend.show" title="Link to this definition"></a></dt>
 <dd><p>Show the plot.</p>
 </dd></dl>
 
@@ -176,20 +241,20 @@ depending on this option.</p></li>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="lplot.main.Plot">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">lplot.main.</span></span><span class="sig-name descname"><span class="pre">Plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lplot/main.html#Plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lplot.main.Plot" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">lplot.main.</span></span><span class="sig-name descname"><span class="pre">Plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lplot/main.html#Plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lplot.main.Plot" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Plot object</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>title</strong> (<em>str</em>) – Title of the plot.</p>
 </dd>
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="lplot.main.Plot.add_data">
-<span class="sig-name descname"><span class="pre">add_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_range</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">slice</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transform</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lplot/main.html#Plot.add_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lplot.main.Plot.add_data" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">add_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_range</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">slice</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transform</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lplot/main.html#Plot.add_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lplot.main.Plot.add_data" title="Link to this definition"></a></dt>
 <dd><p>Add new dateset,</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>data</strong> (<em>Union</em><em>[</em><em>str</em><em>, </em><em>np.ndarray</em><em>]</em>) – Dataset of path to the dataset file.</p></li>
 <li><p><strong>data_range</strong> (<em>Union</em><em>[</em><em>str</em><em>, </em><em>slice</em><em>, </em><em>list</em><em>]</em>) – Columns of the data to use.</p></li>
@@ -202,10 +267,10 @@ depending on this option.</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="lplot.main.Plot.make_plot">
-<span class="sig-name descname"><span class="pre">make_plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'plot'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">backend</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'matplotlib'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lplot/main.html#Plot.make_plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lplot.main.Plot.make_plot" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">make_plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'plot'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">backend</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'matplotlib'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lplot/main.html#Plot.make_plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lplot.main.Plot.make_plot" title="Link to this definition"></a></dt>
 <dd><p>Create the plot</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>mode</strong> (<em>str</em><em>, </em><em>default to &quot;plot&quot;</em>) – Mode of the plot.</p></li>
 <li><p><strong>backend</strong> (<em>str</em><em>, </em><em>default to &quot;matplotlib&quot;</em>) – The plotting engine to actually draw the figure.</p></li>
@@ -219,13 +284,13 @@ if None, the figure won’t be saved.</p></li>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="lplot.main.Plot.n_datasets">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">n_datasets</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#lplot.main.Plot.n_datasets" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">n_datasets</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#lplot.main.Plot.n_datasets" title="Link to this definition"></a></dt>
 <dd><p>Number of datasets.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>n_datasets</strong></p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>int</p>
 </dd>
 </dl>
@@ -233,10 +298,10 @@ if None, the figure won’t be saved.</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="lplot.main.Plot.set_figure_properties">
-<span class="sig-name descname"><span class="pre">set_figure_properties</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">properties</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lplot/main.html#Plot.set_figure_properties"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lplot.main.Plot.set_figure_properties" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">set_figure_properties</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">properties</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lplot/main.html#Plot.set_figure_properties"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lplot.main.Plot.set_figure_properties" title="Link to this definition"></a></dt>
 <dd><p>Update a bunch of figure properties.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>properties</strong> (<em>dict</em>) – A dictionary of figure properties.</p>
 </dd>
 </dl>
@@ -244,10 +309,10 @@ if None, the figure won’t be saved.</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="lplot.main.Plot.set_figure_property">
-<span class="sig-name descname"><span class="pre">set_figure_property</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lplot/main.html#Plot.set_figure_property"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lplot.main.Plot.set_figure_property" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">set_figure_property</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lplot/main.html#Plot.set_figure_property"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lplot.main.Plot.set_figure_property" title="Link to this definition"></a></dt>
 <dd><p>Update a single figure property.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>key</strong> (<em>str</em>) – Name of the figure property.</p></li>
 <li><p><strong>value</strong> (<em>Union</em><em>[</em><em>str</em><em>, </em><em>int</em><em>, </em><em>float</em><em>]</em>) – Value of the figure property.</p></li>
@@ -258,10 +323,10 @@ if None, the figure won’t be saved.</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="lplot.main.Plot.set_transform">
-<span class="sig-name descname"><span class="pre">set_transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transform</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lplot/main.html#Plot.set_transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lplot.main.Plot.set_transform" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">set_transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transform</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lplot/main.html#Plot.set_transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lplot.main.Plot.set_transform" title="Link to this definition"></a></dt>
 <dd><p>Perform tranformation operation on the dataset.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>transform</strong> (<em>str</em><em>, </em><em>default to None</em>) – Transformation to operate on the dataset.</p>
 </dd>
 </dl>
@@ -271,21 +336,21 @@ if None, the figure won’t be saved.</p></li>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="lplot.main.main">
-<span class="sig-prename descclassname"><span class="pre">lplot.main.</span></span><span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lplot/main.html#main"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lplot.main.main" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">lplot.main.</span></span><span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lplot/main.html#main"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lplot.main.main" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 </section>
 <section id="module-lplot.physical_constant">
-<span id="lplot-physical-constant-module"></span><h2>lplot.physical_constant module<a class="headerlink" href="#module-lplot.physical_constant" title="Permalink to this heading"></a></h2>
+<span id="lplot-physical-constant-module"></span><h2>lplot.physical_constant module<a class="headerlink" href="#module-lplot.physical_constant" title="Link to this heading"></a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="lplot.physical_constant.PhysicalConstant">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">lplot.physical_constant.</span></span><span class="sig-name descname"><span class="pre">PhysicalConstant</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_unit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lplot/physical_constant.html#PhysicalConstant"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lplot.physical_constant.PhysicalConstant" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">lplot.physical_constant.</span></span><span class="sig-name descname"><span class="pre">PhysicalConstant</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_unit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lplot/physical_constant.html#PhysicalConstant"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lplot.physical_constant.PhysicalConstant" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>A <em>physical</em> constant in a given units</p>
 <p>This class will construct a given physical constant in different units.
 with provided data at construction.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>data</strong> (<em>str</em>) – Table of constant values data. (See below for format eamples.)</p></li>
 <li><p><strong>name</strong> (<em>str</em><em>, </em><em>optional</em><em>, </em><em>default to None</em>) – Name of the constant.</p></li>
@@ -296,39 +361,39 @@ If None, default to the first in the provided data.</p></li>
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="lplot.physical_constant.PhysicalConstant.data_parse">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">data_parse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lplot/physical_constant.html#PhysicalConstant.data_parse"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lplot.physical_constant.PhysicalConstant.data_parse" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">data_parse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lplot/physical_constant.html#PhysicalConstant.data_parse"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lplot.physical_constant.PhysicalConstant.data_parse" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="lplot.physical_constant.PhysicalConstant.existing_units">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">existing_units</span></span><a class="headerlink" href="#lplot.physical_constant.PhysicalConstant.existing_units" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">existing_units</span></span><a class="headerlink" href="#lplot.physical_constant.PhysicalConstant.existing_units" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 </section>
 <section id="module-lplot.safe_eval">
-<span id="lplot-safe-eval-module"></span><h2>lplot.safe_eval module<a class="headerlink" href="#module-lplot.safe_eval" title="Permalink to this heading"></a></h2>
+<span id="lplot-safe-eval-module"></span><h2>lplot.safe_eval module<a class="headerlink" href="#module-lplot.safe_eval" title="Link to this heading"></a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="lplot.safe_eval.eval_slice">
-<span class="sig-prename descclassname"><span class="pre">lplot.safe_eval.</span></span><span class="sig-name descname"><span class="pre">eval_slice</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sl</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">locals</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">{}</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">slice</span></span></span><a class="reference internal" href="_modules/lplot/safe_eval.html#eval_slice"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lplot.safe_eval.eval_slice" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">lplot.safe_eval.</span></span><span class="sig-name descname"><span class="pre">eval_slice</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sl</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">locals</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">{}</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">slice</span></span></span><a class="reference internal" href="_modules/lplot/safe_eval.html#eval_slice"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lplot.safe_eval.eval_slice" title="Link to this definition"></a></dt>
 <dd><p>Evaluate the Slice AST object and reconstruct the slice object.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="lplot.safe_eval.safe_assign">
-<span class="sig-prename descclassname"><span class="pre">lplot.safe_eval.</span></span><span class="sig-name descname"><span class="pre">safe_assign</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">AST</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">any</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">locals</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">{}</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lplot/safe_eval.html#safe_assign"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lplot.safe_eval.safe_assign" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">lplot.safe_eval.</span></span><span class="sig-name descname"><span class="pre">safe_assign</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">AST</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">any</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">locals</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">{}</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lplot/safe_eval.html#safe_assign"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lplot.safe_eval.safe_assign" title="Link to this definition"></a></dt>
 <dd><p>Safely assign value to a local variable in locals dict.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="lplot.safe_eval.safe_eval">
-<span class="sig-prename descclassname"><span class="pre">lplot.safe_eval.</span></span><span class="sig-name descname"><span class="pre">safe_eval</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node_or_string</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">AST</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">locals</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">{}</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">Number</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/lplot/safe_eval.html#safe_eval"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lplot.safe_eval.safe_eval" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">lplot.safe_eval.</span></span><span class="sig-name descname"><span class="pre">safe_eval</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node_or_string</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">AST</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">locals</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">{}</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Number</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">ndarray</span></span></span><a class="reference internal" href="_modules/lplot/safe_eval.html#safe_eval"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lplot.safe_eval.safe_eval" title="Link to this definition"></a></dt>
 <dd><p>Safely evaluate expression with some supported functions and local variables.</p>
 <p>Adapted from Python’s built in ast.literal_eval function, this function provides more
 numerical flexibility while trying to be as safe as possible.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>node_or_string</strong> (<em>str</em><em> or </em><em>ast.AST</em>) – The expression to evaluate.</p></li>
 <li><p><strong>locals</strong> (<em>dict</em>) – Only generic number types, numpy number types, and numpy.ndarray are supported as local variables.</p></li>
@@ -339,50 +404,50 @@ numerical flexibility while trying to be as safe as possible.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="lplot.safe_eval.safe_exec">
-<span class="sig-prename descclassname"><span class="pre">lplot.safe_eval.</span></span><span class="sig-name descname"><span class="pre">safe_exec</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">AST</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">locals</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">{}</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lplot/safe_eval.html#safe_exec"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lplot.safe_eval.safe_exec" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">lplot.safe_eval.</span></span><span class="sig-name descname"><span class="pre">safe_exec</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">AST</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">locals</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">{}</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lplot/safe_eval.html#safe_exec"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lplot.safe_eval.safe_exec" title="Link to this definition"></a></dt>
 <dd><p>Safely execute a Python statement with provided local variables.</p>
 </dd></dl>
 
 </section>
 <section id="module-lplot.unit_conversion">
-<span id="lplot-unit-conversion-module"></span><h2>lplot.unit_conversion module<a class="headerlink" href="#module-lplot.unit_conversion" title="Permalink to this heading"></a></h2>
+<span id="lplot-unit-conversion-module"></span><h2>lplot.unit_conversion module<a class="headerlink" href="#module-lplot.unit_conversion" title="Link to this heading"></a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="lplot.unit_conversion.UnitConversion">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">lplot.unit_conversion.</span></span><span class="sig-name descname"><span class="pre">UnitConversion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lplot/unit_conversion.html#UnitConversion"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lplot.unit_conversion.UnitConversion" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">lplot.unit_conversion.</span></span><span class="sig-name descname"><span class="pre">UnitConversion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lplot/unit_conversion.html#UnitConversion"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lplot.unit_conversion.UnitConversion" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Find unit conversion coefficients</p>
 <p>This class construct a graph of different units and find a path within
 the graph the calculate unit conversion coefficients.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>data</strong> (<em>str</em>) – Table of unit conversion data. (See below for format eamples.)</p>
 </dd>
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="lplot.unit_conversion.UnitConversion.data_parse">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">data_parse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lplot/unit_conversion.html#UnitConversion.data_parse"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lplot.unit_conversion.UnitConversion.data_parse" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">data_parse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lplot/unit_conversion.html#UnitConversion.data_parse"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lplot.unit_conversion.UnitConversion.data_parse" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="lplot.unit_conversion.UnitConversion.find_path">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">find_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">graph</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lplot/unit_conversion.html#UnitConversion.find_path"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lplot.unit_conversion.UnitConversion.find_path" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">find_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">graph</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lplot/unit_conversion.html#UnitConversion.find_path"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lplot.unit_conversion.UnitConversion.find_path" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 </section>
 <section id="module-lplot.wheels">
-<span id="lplot-wheels-module"></span><h2>lplot.wheels module<a class="headerlink" href="#module-lplot.wheels" title="Permalink to this heading"></a></h2>
+<span id="lplot-wheels-module"></span><h2>lplot.wheels module<a class="headerlink" href="#module-lplot.wheels" title="Link to this heading"></a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="lplot.wheels.Wheel">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">lplot.wheels.</span></span><span class="sig-name descname"><span class="pre">Wheel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">items</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loop</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lplot/wheels.html#Wheel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lplot.wheels.Wheel" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">lplot.wheels.</span></span><span class="sig-name descname"><span class="pre">Wheel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">items</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loop</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lplot/wheels.html#Wheel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lplot.wheels.Wheel" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>A Wheel</p>
 <p>An iterator of a list of items.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>items</strong> (<em>list of str</em>) – List of items in the wheel.</p></li>
+<li><p><strong>items</strong> (<em>list</em><em> of </em><em>str</em>) – List of items in the wheel.</p></li>
 <li><p><strong>loop</strong> (<em>bool</em><em>, </em><em>optional</em><em>, </em><em>default to True</em>) – Whether to loop around and start from the beginning of the list,
 when the wheel reaches the end.</p></li>
 </ul>
@@ -390,34 +455,34 @@ when the wheel reaches the end.</p></li>
 </dl>
 <dl class="py property">
 <dt class="sig sig-object py" id="lplot.wheels.Wheel.current_item">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">current_item</span></span><a class="headerlink" href="#lplot.wheels.Wheel.current_item" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">current_item</span></span><a class="headerlink" href="#lplot.wheels.Wheel.current_item" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="lplot.wheels.Wheel.initialize">
-<span class="sig-name descname"><span class="pre">initialize</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lplot/wheels.html#Wheel.initialize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lplot.wheels.Wheel.initialize" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">initialize</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lplot/wheels.html#Wheel.initialize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lplot.wheels.Wheel.initialize" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="lplot.wheels.Wheel.items">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">items</span></span><a class="headerlink" href="#lplot.wheels.Wheel.items" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">items</span></span><a class="headerlink" href="#lplot.wheels.Wheel.items" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="lplot.wheels.Wheel.n_items">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">n_items</span></span><a class="headerlink" href="#lplot.wheels.Wheel.n_items" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">n_items</span></span><a class="headerlink" href="#lplot.wheels.Wheel.n_items" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="lplot.wheels.Wheel.next">
-<span class="sig-name descname"><span class="pre">next</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lplot/wheels.html#Wheel.next"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lplot.wheels.Wheel.next" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">next</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lplot/wheels.html#Wheel.next"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lplot.wheels.Wheel.next" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 </section>
 <section id="module-lplot">
-<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-lplot" title="Permalink to this heading"></a></h2>
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-lplot" title="Link to this heading"></a></h2>
 </section>
 </section>
 
